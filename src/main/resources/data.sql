@@ -1,0 +1,1 @@
+insert into articulo (idarticulo, codigoarticulo, descripcion, estado, precio)values(1,1,'primer artículo', 1, 2.3);

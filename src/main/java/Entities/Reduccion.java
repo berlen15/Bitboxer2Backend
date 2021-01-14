@@ -1,4 +1,4 @@
 package Entities;
 
-public class Reduccion {
+public class Reduccion implements Serializable {
 }

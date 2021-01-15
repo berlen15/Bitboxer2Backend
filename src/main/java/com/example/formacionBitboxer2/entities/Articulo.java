@@ -1,4 +1,6 @@
-package entities;
+package com.example.formacionBitboxer2.entities;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,7 +21,7 @@ public class Articulo implements Serializable {
     @Column(name="descripcion")
     private String descripcion;
 
-    @Column(name="precio", nullable = false)
+    @Column(name="precio")
     private Double precio;
 
     @Column(name="estado", nullable = false)
@@ -31,16 +33,25 @@ public class Articulo implements Serializable {
             joinColumns = @JoinColumn(name="articulo_id", nullable = false),
             inverseJoinColumns =  @JoinColumn(name="proveedor_id")
     )
-    private List<Proveedor> proveedores;
+    private List<Proveedor> proveedor;
 
+    @JsonIgnoreProperties("articulo")
     @OneToMany (cascade = CascadeType.ALL, mappedBy = "articulo")
     private List <Reduccion> reducciones;
+
+    public Articulo() {}
 
     public Articulo(int idarticulo, int codigoArticulo, String descripcion, Double precio, int estado) {
         this.idarticulo = idarticulo;
         this.codigoArticulo = codigoArticulo;
         this.descripcion = descripcion;
         this.precio = precio;
+        this.estado = estado;
+    }
+
+    public Articulo(int codigoArticulo, String descripcion, int estado) {
+        this.codigoArticulo = codigoArticulo;
+        this.descripcion = descripcion;
         this.estado = estado;
     }
 
@@ -85,11 +96,11 @@ public class Articulo implements Serializable {
     }
 
     public List<Proveedor> getProveedores() {
-        return proveedores;
+        return proveedor;
     }
 
     public void setProveedores(List<Proveedor> proveedores) {
-        this.proveedores = proveedores;
+        this.proveedor = proveedores;
     }
 
     public List<Reduccion> getReducciones() {

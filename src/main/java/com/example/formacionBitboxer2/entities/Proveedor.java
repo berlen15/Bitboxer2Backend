@@ -1,4 +1,4 @@
-package entities;
+package com.example.formacionBitboxer2.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,8 +19,16 @@ public class Proveedor implements Serializable {
     private String pais;
 
 
-    @ManyToMany(mappedBy = "proveedores")
+    @ManyToMany(mappedBy = "proveedor")
     private List<Articulo> articulos;
+
+
+    public Proveedor(int idproveedor, String nombre, String pais) {
+        this.idproveedor = idproveedor;
+        this.nombre = nombre;
+        this.pais = pais;
+    }
+    public Proveedor(){}
 
     public int getIdproveedor() {
         return idproveedor;

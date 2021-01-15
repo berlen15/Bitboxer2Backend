@@ -1,4 +1,8 @@
-package entities;
+package com.example.formacionBitboxer2.entities;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +16,7 @@ public class Reduccion implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idreduccion;
 
+    @JsonIgnoreProperties("reducciones")
     @ManyToOne
     @JoinColumn(name="usuario_id", nullable = false)
     private Usuario creador;
@@ -25,9 +30,20 @@ public class Reduccion implements Serializable {
     @Column(name="fin", nullable = false)
     private Date fin;
 
+
     @ManyToOne
     @JoinColumn ( name = "articulo_id", nullable = false, updatable = false)
     private Articulo articulo;
+
+    public Reduccion(){}
+    public Reduccion(int idreduccion, Usuario creador, Date creacion, Date inicio, Date fin, Articulo articulo) {
+        this.idreduccion = idreduccion;
+        this.creador = creador;
+        this.creacion = creacion;
+        this.inicio = inicio;
+        this.fin = fin;
+        this.articulo = articulo;
+    }
 
     public int getIdreduccion() {
         return idreduccion;

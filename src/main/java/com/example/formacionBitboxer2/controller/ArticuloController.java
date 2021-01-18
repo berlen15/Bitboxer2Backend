@@ -1,37 +1,40 @@
 package com.example.formacionBitboxer2.controller;
 
+import com.example.formacionBitboxer2.converter.ArticuloConverter;
+import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.entities.Articulo;
-import jdk.nashorn.internal.ir.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.example.formacionBitboxer2.service.IArticuloService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="articulos")
 public class ArticuloController implements ErrorController {
 
     @Autowired
     private IArticuloService articuloService;
 
-    @GetMapping("")
-    public List<Articulo> getAll(){
+    private ArticuloConverter articuloConverter = new ArticuloConverter();
+    @GetMapping("/articulos")
+    public List<ArticuloDTO> obtenerTodos(){
         return articuloService.findAll();
     }
 
-    @GetMapping("/filter")
-    public @ResponseBody List<Articulo>  getByFilter(@RequestParam(name="estado") String estado) {
-        List<Articulo> resultados = new ArrayList<>();
+    @GetMapping("/articulos/{id}")
+    public ArticuloDTO obtenerPorId(@PathVariable(name="id") Integer id){
+        return articuloService.getOneById(id);
+    }
+
+
+    @GetMapping("/articulos/filter")
+    public @ResponseBody List<ArticuloDTO>  obtenerPorFiltro(@RequestParam(name="estado") String estado) {
+        List<ArticuloDTO> resultados = new ArrayList<>();
         if(estado.equals("Venta")){
-            for(Articulo a : articuloService.findAll()){
+            for(ArticuloDTO a : articuloService.findAll()){
                 if(a.getEstado()==1){
                     resultados.add(a);
                 }else{
@@ -39,7 +42,7 @@ public class ArticuloController implements ErrorController {
                 }
             }
         }else{
-            for(Articulo a : articuloService.findAll()){
+            for(ArticuloDTO a : articuloService.findAll()){
                 if(a.getEstado()==2){
                     resultados.add(a);
                 }else{
@@ -58,41 +61,36 @@ public class ArticuloController implements ErrorController {
     }}
     * */
 
-    @PostMapping("")
-    public ResponseEntity save(@RequestBody Articulo articulo){
-        if(articulo!=null){
-            articuloService.save(articulo);
+    @PostMapping("/articulos")
+    public ResponseEntity guardar(@RequestBody ArticuloDTO articuloDTO){
+        if(articuloDTO!=null){
+            articuloService.save(articuloDTO);
             return new ResponseEntity("Artículo creado con éxito",HttpStatus.CREATED);
         }else{
             return new ResponseEntity("El articulo no se ha creado correctamente. Supervise sus valores",HttpStatus.BAD_REQUEST);
         }
 
     }
-
-    /*@PutMapping("/editar/{id}")
+    @PutMapping("/articulos/{id}")
     @ResponseBody
-    public ResponseEntity update(@PathVariable("id") int id, HttpServletRequest request,
-                                            HttpServletResponse response, Model model){
-        String descripcion = request.getParameter("descripcion");
-        Double precio = Double.parseDouble(request.getParameter("precio"));
-        String estado = request.getParameter("estado");
-
-        Articulo editado = articuloService.getOneById(id);
-        if(!descripcion.equals("") || descripcion!=null){
-            editado.setDescripcion(descripcion);
+    public ResponseEntity actualizar(@PathVariable("id") int id, @RequestBody ArticuloDTO articuloDTO){
+        if(articuloDTO==null){
+            return new ResponseEntity("El artículo está vacío",HttpStatus.BAD_REQUEST);
         }
-        if(!precio.equals("") || precio!=null){
-            editado.setDescripcion(descripcion);
+        Articulo articuloEditar = articuloConverter.dto2pojo(articuloService.getOneById(id));
+        if(articuloDTO.getPrecio()!=null){
+            articuloEditar.setPrecio(articuloDTO.getPrecio());
         }
-        if(!estado.equals("") || estado!=null){
-            editado.setDescripcion(descripcion);
+        if(articuloDTO.getDescripcion()!=null){
+            articuloEditar.setDescripcion(articuloDTO.getDescripcion());
         }
-        if((descripcion.equals("") ||  descripcion==null) && (precio.equals("")|| precio==null)  && (estado.equals("") || estado==null)){
-            return new ResponseEntity("Los valores enviados están vacíos",HttpStatus.BAD_REQUEST);
+        if(articuloDTO.getEstado()!=null){
+            articuloEditar.setEstado(articuloDTO.getEstado());
         }
-        articuloService.save(editado);
+        articuloService.save(articuloConverter.pojo2dto(articuloEditar));
         return new ResponseEntity("Se ha editado el artículo",HttpStatus.ACCEPTED);
-    }*/
+    }
+
 
     @Override
     public String getErrorPath() {

@@ -8,11 +8,11 @@ import java.util.List;
 
 @Entity
 @Table(name="articulo")
-public class Articulo implements Serializable {
+public class Articulo implements Serializable, Comparable<Articulo> {
     @Id
     @Column(name="idarticulo")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idarticulo;
+    private Integer idarticulo;
 
     @Column(name="codigoarticulo", unique = true)
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -25,7 +25,7 @@ public class Articulo implements Serializable {
     private Double precio;
 
     @Column(name="estado", nullable = false)
-    private int estado; //Estado 1 = venta, Estado 2 = descatalogado
+    private Integer estado; //Estado 1 = venta, Estado 2 = descatalogado
 
     @ManyToMany (cascade = {CascadeType.ALL})
     @JoinTable(
@@ -41,7 +41,7 @@ public class Articulo implements Serializable {
 
     public Articulo() {}
 
-    public Articulo(int idarticulo, int codigoArticulo, String descripcion, Double precio, int estado) {
+    public Articulo(Integer idarticulo, int codigoArticulo, String descripcion, Double precio, int estado) {
         this.idarticulo = idarticulo;
         this.codigoArticulo = codigoArticulo;
         this.descripcion = descripcion;
@@ -55,12 +55,8 @@ public class Articulo implements Serializable {
         this.estado = estado;
     }
 
-    public int getIdarticulo() {
+    public Integer getIdarticulo() {
         return idarticulo;
-    }
-
-    public void setIdarticulo(int idarticulo) {
-        this.idarticulo = idarticulo;
     }
 
     public int getCodigoArticulo() {
@@ -87,20 +83,24 @@ public class Articulo implements Serializable {
         this.precio = precio;
     }
 
-    public int getEstado() {
+    public void setIdarticulo(Integer idarticulo) {
+        this.idarticulo = idarticulo;
+    }
+
+    public Integer getEstado() {
         return estado;
     }
 
-    public void setEstado(int estado) {
+    public void setEstado(Integer estado) {
         this.estado = estado;
     }
 
-    public List<Proveedor> getProveedores() {
+    public List<Proveedor> getProveedor() {
         return proveedor;
     }
 
-    public void setProveedores(List<Proveedor> proveedores) {
-        this.proveedor = proveedores;
+    public void setProveedor(List<Proveedor> proveedor) {
+        this.proveedor = proveedor;
     }
 
     public List<Reduccion> getReducciones() {
@@ -114,5 +114,23 @@ public class Articulo implements Serializable {
     @Override
     public String toString(){
         return "ID: "+this.idarticulo+" | CODIGO: "+this.codigoArticulo+ " | ESTADO: "+this.estado;
+    }
+
+    @Override
+    public int compareTo(Articulo o) {
+        return this.compareTo(o);
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || obj == null || getClass() != obj.getClass())
+            return false;
+        Articulo that = (Articulo) obj;
+        return obj.equals(that.idarticulo);
+    }
+    @Override
+    public int hashCode() {
+        return this == null ? 0 : this.hashCode();
     }
 }

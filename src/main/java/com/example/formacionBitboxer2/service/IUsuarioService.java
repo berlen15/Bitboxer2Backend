@@ -1,9 +1,10 @@
 package com.example.formacionBitboxer2.service;
 
+import com.example.formacionBitboxer2.dto.UsuarioDTO;
 import com.example.formacionBitboxer2.entities.Usuario;
 
 public interface IUsuarioService {
-    Usuario findByIdusuario(int idusuario);
-    Usuario findByNombreusuario(String nombreusuario);
-    void save(Usuario usuario);
+    UsuarioDTO findByIdusuario(int idusuario);
+    UsuarioDTO findByNombreusuario(String nombreusuario);
+    void save(UsuarioDTO usuario);
 }

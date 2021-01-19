@@ -7,16 +7,16 @@ import java.io.Serializable;
 import java.util.List;
 
 public class ProveedorDTO implements Serializable {
-    private int idproveedor;
+    private Integer idproveedor;
     private String nombre;
     private String pais;
-    private List<Articulo> articulos;
+    private List<ArticuloDTO> articulos;
 
-    public int getIdproveedor() {
+    public Integer getIdproveedor() {
         return idproveedor;
     }
 
-    public void setIdproveedor(int idproveedor) {
+    public void setIdproveedor(Integer idproveedor) {
         this.idproveedor = idproveedor;
     }
 
@@ -36,11 +36,11 @@ public class ProveedorDTO implements Serializable {
         this.pais = pais;
     }
 
-    public List<Articulo> getArticulos() {
+    public List<ArticuloDTO> getArticulos() {
         return articulos;
     }
 
-    public void setArticulos(List<Articulo> articulos) {
+    public void setArticulos(List<ArticuloDTO> articulos) {
         this.articulos = articulos;
     }
 }

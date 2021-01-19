@@ -9,18 +9,18 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ReduccionDTO implements Serializable {
-    private int idreduccion;
+    private Integer idreduccion;
     private Usuario creador;
     private Date creacion;
     private Date inicio;
     private Date fin;
     private Articulo articulo;
 
-    public int getIdreduccion() {
+    public Integer getIdreduccion() {
         return idreduccion;
     }
 
-    public void setIdreduccion(int idreduccion) {
+    public void setIdreduccion(Integer idreduccion) {
         this.idreduccion = idreduccion;
     }
 

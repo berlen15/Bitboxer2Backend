@@ -27,7 +27,8 @@ public class Articulo implements Serializable, Comparable<Articulo> {
     @Column(name="estado", nullable = false)
     private Integer estado; //Estado 1 = venta, Estado 2 = descatalogado
 
-    @ManyToMany (cascade = {CascadeType.ALL})
+    @JsonIgnoreProperties("articulos")
+    @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(
             name = "articulo_proveedor",
             joinColumns = @JoinColumn(name="articulo_id", nullable = false),
@@ -111,6 +112,13 @@ public class Articulo implements Serializable, Comparable<Articulo> {
         this.reducciones = reducciones;
     }
 
+    public void addReduccion(Reduccion red){
+        reducciones.add(red);
+    }
+
+    public void addProveedor(Proveedor prov){
+        proveedor.add(prov);
+    }
     @Override
     public String toString(){
         return "ID: "+this.idarticulo+" | CODIGO: "+this.codigoArticulo+ " | ESTADO: "+this.estado;

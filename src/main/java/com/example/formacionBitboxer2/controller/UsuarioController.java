@@ -2,21 +2,16 @@ package com.example.formacionBitboxer2.controller;
 
 import com.example.formacionBitboxer2.converter.UsuarioConverter;
 import com.example.formacionBitboxer2.dto.UsuarioDTO;
-import com.example.formacionBitboxer2.entities.Usuario;
 import com.example.formacionBitboxer2.service.UsuarioService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,12 +31,12 @@ public class UsuarioController implements ErrorController {
 
     @GetMapping("/usuarios/{idusuario}")
     public @ResponseBody UsuarioDTO getById(@PathVariable("idusuario") int idusuario){
-        return usuarioService.findByIdusuario(idusuario);
+        return usuarioService.buscarPorId(idusuario);
     }
 
     @PostMapping("/login")
     public UsuarioDTO login(@RequestBody UsuarioDTO usuarioDTO) {
-        UsuarioDTO usuarioLogged = usuarioService.findByNombreusuario(usuarioDTO.getNombreusuario());
+        UsuarioDTO usuarioLogged = usuarioService.buscarPorNombreUsuario(usuarioDTO.getNombreusuario());
         if(usuarioLogged!=null && BCrypt.checkpw(usuarioDTO.getContraseña(),usuarioLogged.getContraseña())){
             usuarioLogged.setToken(getJWTToken(usuarioDTO.getNombreusuario()));
             return usuarioLogged;

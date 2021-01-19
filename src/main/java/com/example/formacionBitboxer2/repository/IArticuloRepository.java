@@ -1,6 +1,7 @@
 package com.example.formacionBitboxer2.repository;
 
 import com.example.formacionBitboxer2.entities.Articulo;
+import com.example.formacionBitboxer2.entities.Proveedor;
 import com.example.formacionBitboxer2.entities.Reduccion;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -15,5 +16,6 @@ public interface IArticuloRepository extends CrudRepository<Articulo, Integer> {
     List<Articulo> findByProveedor(int idProveedor);
     List<Reduccion> findAllByCodigoArticulo(int codigo);
     Articulo getOneByIdarticulo(int id);
+    List<Proveedor> findAllByIdarticulo(int id);
 
 }

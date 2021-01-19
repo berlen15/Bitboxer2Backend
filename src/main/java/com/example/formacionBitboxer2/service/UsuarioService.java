@@ -3,7 +3,6 @@ package com.example.formacionBitboxer2.service;
 import com.example.formacionBitboxer2.converter.UsuarioConverter;
 import com.example.formacionBitboxer2.dto.UsuarioDTO;
 import com.example.formacionBitboxer2.entities.Usuario;
-import com.example.formacionBitboxer2.repository.IReduccionRepository;
 import com.example.formacionBitboxer2.repository.IUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,17 +19,17 @@ public class UsuarioService implements IUsuarioService {
     private UsuarioConverter usuarioConverter = new UsuarioConverter();
 
     @Override
-    public UsuarioDTO findByIdusuario(int idusuario) {
+    public UsuarioDTO buscarPorId(int idusuario) {
         return  usuarioConverter.pojo2dto(usuarioRepository.findByIdusuario(idusuario));
     }
 
     @Override
-    public UsuarioDTO findByNombreusuario(String nombreusuario) {
+    public UsuarioDTO buscarPorNombreUsuario(String nombreusuario) {
         return  usuarioConverter.pojo2dto(usuarioRepository.findByNombreusuario(nombreusuario));
     }
 
     @Override
-    public void save(UsuarioDTO usuario) {
+    public void guardarUsuario(UsuarioDTO usuario) {
         usuarioRepository.save(usuarioConverter.dto2pojo(usuario));
     }
 

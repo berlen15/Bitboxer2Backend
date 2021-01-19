@@ -8,12 +8,11 @@ import com.example.formacionBitboxer2.entities.Articulo;
 import java.util.List;
 
 public interface IArticuloService {
-    public List<ArticuloDTO> findAll();
-    public List<ArticuloDTO> findByProveedor(int idproveedor);
-    public void save(ArticuloDTO articulo);
-    public void update(ArticuloDTO articulo);
-    public ArticuloDTO getOneById(int id);
-    public ArticuloDTO findOneById(int id);
-    public Boolean addProveedor(int id, ProveedorDTO proveedor);
-    public Boolean addReduccion(int id, ReduccionDTO reduccion);
+    public List<ArticuloDTO> obtenerTodos();
+    public void guardarArticulo(ArticuloDTO articulo);
+    public void actualizarArticulo(ArticuloDTO articulo);
+    public ArticuloDTO obtenerPorId(int id);
+    public ArticuloDTO buscarPorId(int id);
+    public void addProveedor(int id, int idproveedor);
+    public void addReduccion(int id, ReduccionDTO reduccion);
 }

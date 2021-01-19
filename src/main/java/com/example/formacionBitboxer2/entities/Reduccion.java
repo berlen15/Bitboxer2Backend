@@ -14,7 +14,7 @@ public class Reduccion implements Serializable {
     @Id
     @Column(name="idreduccion")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idreduccion;
+    private Integer idreduccion;
 
     @JsonIgnoreProperties("reducciones")
     @ManyToOne
@@ -45,11 +45,11 @@ public class Reduccion implements Serializable {
         this.articulo = articulo;
     }
 
-    public int getIdreduccion() {
+    public Integer getIdreduccion() {
         return idreduccion;
     }
 
-    public void setIdreduccion(int idreduccion) {
+    public void setIdreduccion(Integer idreduccion) {
         this.idreduccion = idreduccion;
     }
 

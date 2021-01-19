@@ -35,27 +35,12 @@ public class FormacionBitboxer2Application {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.cors().and().csrf().disable()
+			http.csrf().disable()
 					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 					.authorizeRequests()
 					.antMatchers(HttpMethod.POST, "/login").permitAll()
-					.anyRequest().authenticated();;
-			/*http.csrf().disable()
-					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-					.authorizeRequests()
-					.antMatchers(HttpMethod.POST, "/login").permitAll()
-					.anyRequest().authenticated();*/
+					.antMatchers(HttpMethod.GET, "/articulos").permitAll()
+					.anyRequest().authenticated();
 		}
-		/*@Bean
-		CorsConfigurationSource corsConfigurationSource() {
-			CorsConfiguration configuration = new CorsConfiguration();
-			configuration.setAllowedOrigins(Arrays.asList("*"));
-			configuration.setAllowedMethods(Arrays.asList("*"));
-			configuration.setAllowedHeaders(Arrays.asList("*"));
-			configuration.setAllowCredentials(true);
-			UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-			source.registerCorsConfiguration("/login", configuration);
-			return source;
-		}*/
 	}
 }

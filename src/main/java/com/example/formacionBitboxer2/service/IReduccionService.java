@@ -1,10 +1,11 @@
 package com.example.formacionBitboxer2.service;
 
 import com.example.formacionBitboxer2.dto.ReduccionDTO;
-
-import java.util.List;
+import com.example.formacionBitboxer2.entities.Reduccion;
 
 public interface IReduccionService {
-    public List<ReduccionDTO> obtenerTodos();
-    public List<ReduccionDTO> obtenerTodosPorArticulo(int idarticulo);
+    public void asociarArticulo(Integer idarticulo, ReduccionDTO reduccionDTO);
+    public ReduccionDTO obtenerPorId(Integer idreduccion);
+    public void guardarReduccion(Reduccion reduccion);
+
 }

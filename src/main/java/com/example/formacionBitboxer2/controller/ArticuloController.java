@@ -5,22 +5,27 @@ import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.ProveedorDTO;
 import com.example.formacionBitboxer2.dto.ReduccionDTO;
 import com.example.formacionBitboxer2.entities.Articulo;
-import com.example.formacionBitboxer2.entities.Proveedor;
 import com.example.formacionBitboxer2.service.ArticuloService;
+import com.example.formacionBitboxer2.service.ReduccionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.formacionBitboxer2.service.IArticuloService;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 @RestController
 public class ArticuloController implements ErrorController {
 
     @Autowired
     private ArticuloService articuloService;
+
+    @Autowired
+    private ReduccionService reduccionService;
 
     private ArticuloConverter articuloConverter = new ArticuloConverter();
     @GetMapping("/articulos")
@@ -65,7 +70,7 @@ public class ArticuloController implements ErrorController {
     }}
     * */
 
-    @PostMapping("/articulos")
+    @PostMapping("/user/articulos")
     public ResponseEntity guardar(@RequestBody ArticuloDTO articuloDTO){
         if(articuloDTO!=null){
             articuloService.guardarArticulo(articuloDTO);
@@ -78,7 +83,7 @@ public class ArticuloController implements ErrorController {
     @PutMapping("/articulos/{id}")
     @ResponseBody
     public ResponseEntity actualizar(@PathVariable("id") int id, @RequestBody ArticuloDTO articuloDTO){
-        if(articuloDTO==null){
+        if(articuloDTO.getDescripcion()==null && articuloDTO.getEstado()==null && articuloDTO.getPrecio()==null){
             return new ResponseEntity("El artículo está vacío",HttpStatus.BAD_REQUEST);
         }
         Articulo articuloEditar = articuloConverter.dto2pojo(articuloService.obtenerPorId(id));
@@ -96,22 +101,28 @@ public class ArticuloController implements ErrorController {
     }
 
     @PostMapping("/articulos/{id}/proveedores")
-    public ResponseEntity añadirProveedor(@PathVariable("id") int id, @RequestParam Integer idproveedor){
-        if(idproveedor==null){
+    public ResponseEntity añadirProveedor(@PathVariable("id") int id, @RequestBody ProveedorDTO proveedorDTO){
+        if(proveedorDTO==null){
             return new ResponseEntity("El proveedor seleccionado no es válido", HttpStatus.BAD_REQUEST);
         }
-        articuloService.addProveedor(id, idproveedor);
-        return new ResponseEntity("Se ha añadido el proveedor al artículo", HttpStatus.CREATED);
+        if(articuloService.addProveedor(id, proveedorDTO)){
+            return new ResponseEntity("Se ha añadido el proveedor al artículo", HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity("El proveedor ya está asociado al artículo", HttpStatus.BAD_REQUEST);
+        }
+
     }
 
-    @PostMapping("/articulos/{id}/reducciones")
-    public ResponseEntity añadirReduccion(@PathVariable("id") int id, @RequestBody ReduccionDTO reduccionDTO){
-       /* if(reduccionDTO==null){
-            return new ResponseEntity("El proveedor seleccionado no es válido", HttpStatus.BAD_REQUEST);
+    @PostMapping("/user/{idusuario}/articulos/{id}/reducciones")
+    public ResponseEntity añadirReduccion(@PathVariable("idusuario") int idusuario, @PathVariable("id") int id, @RequestBody ReduccionDTO reduccionDTO){
+        if(reduccionDTO==null){
+            return new ResponseEntity("La fecha de fin, ni creador ni la cantidad pueden estar vacíos", HttpStatus.BAD_REQUEST);
         }
-        articuloService.addReduccion(id, reduccionDTO);
-        return new ResponseEntity("Se ha añadido el proveedor al artículo", HttpStatus.CREATED);*/
-        return new ResponseEntity("Mensaje por defecto", HttpStatus.CREATED);
+        //Asociar reducción al artículo
+        if(articuloService.addReduccion(id, idusuario, reduccionDTO)){
+            return new ResponseEntity("Se ha añadido la reducción de precio al artículo", HttpStatus.CREATED);
+        }
+        return new ResponseEntity("No eres el creador del artículo", HttpStatus.BAD_REQUEST);
     }
     @Override
     public String getErrorPath() {

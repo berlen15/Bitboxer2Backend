@@ -3,17 +3,22 @@ package com.example.formacionBitboxer2.service;
 import com.example.formacionBitboxer2.converter.ArticuloConverter;
 import com.example.formacionBitboxer2.converter.ProveedorConverter;
 import com.example.formacionBitboxer2.converter.ReduccionConverter;
+import com.example.formacionBitboxer2.converter.UsuarioConverter;
 import com.example.formacionBitboxer2.dto.ArticuloDTO;
+import com.example.formacionBitboxer2.dto.ProveedorDTO;
 import com.example.formacionBitboxer2.dto.ReduccionDTO;
 import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.entities.Proveedor;
+import com.example.formacionBitboxer2.entities.Reduccion;
+import com.example.formacionBitboxer2.repository.IArticuloRepository;
 import com.example.formacionBitboxer2.repository.IProveedorRepository;
+import com.example.formacionBitboxer2.repository.IUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.formacionBitboxer2.repository.IArticuloRepository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,15 +26,19 @@ import java.util.List;
 public class ArticuloService implements IArticuloService{
     @Autowired
     private IArticuloRepository articuloRepository;
-
+    @Autowired
+    private IUsuarioRepository usuarioRepository;
     @Autowired
     private IProveedorRepository proveedorRepository;
+
+    @Autowired
+    private ReduccionService reduccionService;
 
     //CONVERTERS
     private ArticuloConverter articuloConverter= new ArticuloConverter();
     private ProveedorConverter proveedorConverter = new ProveedorConverter();
     private ReduccionConverter reduccionConverter = new ReduccionConverter();
-
+    private UsuarioConverter usuarioConverter = new UsuarioConverter();
 
     @Override
     public List<ArticuloDTO> obtenerTodos() {
@@ -52,6 +61,11 @@ public class ArticuloService implements IArticuloService{
     }
 
     @Override
+    public List<ArticuloDTO> findByProveedor(int idproveedor) {
+        return articuloConverter.convertAllToDTO(articuloRepository.findByProveedor(idproveedor));
+    }
+
+    @Override
     public ArticuloDTO obtenerPorId(int id) {
         return articuloConverter.pojo2dto(articuloRepository.findOneByIdarticulo(id));
     }
@@ -63,31 +77,29 @@ public class ArticuloService implements IArticuloService{
 
     /*SOLO AÑADE PROVEEDORES YA EXISTENTES EN EL SISTEMA*/
     @Override
-    public void addProveedor(int id, int idproveedor) {
+    public boolean addProveedor(int id, ProveedorDTO proveedorDTO) {
         Articulo articulo = articuloRepository.getOneByIdarticulo(id);
-        Proveedor proveedor = proveedorRepository.findByIdproveedor(idproveedor);
-        //Guardar en la lista de proveedores
-        /*List<Proveedor> proveedores = articulo.getProveedor();
-        proveedores.add(proveedor);
-        articuloRepository.save(articulo);
-
-        //Guardar en la lista de artículos del proveedor
-        List<Articulo> articulosProveedor;
-        if(proveedor.getArticulos()==null){
-             articulosProveedor = new ArrayList<>();
-        }else{
-            articulosProveedor = proveedor.getArticulos();
+        Proveedor proveedor = proveedorRepository.findByIdproveedor(proveedorDTO.getIdproveedor());
+        if(!articulo.getProveedor().contains(proveedor)){
+            articulo.addProveedor(proveedor);
+            return true;
         }
-
-        articulosProveedor.add(articulo);
-        proveedorRepository.save(proveedor);*/
-        articulo.addProveedor(proveedor);
-
+        return false;
     }
 
     @Override
-    public void addReduccion(int id, ReduccionDTO reduccion) {
-        Articulo articulo = articuloRepository.findOneByIdarticulo(id);
-        articulo.addReduccion(reduccionConverter.dto2pojo(reduccion));
+    public boolean addReduccion(int idarticulo, int idusuario, ReduccionDTO reduccion) {
+        Articulo articulo = articuloRepository.findOneByIdarticulo(idarticulo);
+        if(articulo.getCreador().getIdusuario()==idusuario){
+            List<Reduccion> reducciones = articulo.getReducciones();
+            Reduccion nuevaReduccion = reduccionConverter.dto2pojo(reduccion);
+            reduccionService.asociarArticulo(idarticulo, reduccion);
+            articulo.addReduccion(nuevaReduccion);
+            if(articulo.getReducciones().contains(nuevaReduccion)) {
+                return true;
+            }
+        }
+        return false;
+
     }
 }

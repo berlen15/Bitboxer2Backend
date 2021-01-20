@@ -20,12 +20,14 @@ public class ProveedorService implements IProveedorService{
 
     private ProveedorConverter proveedorConverter = new ProveedorConverter();
     private ArticuloConverter articuloConverter = new ArticuloConverter();
-
     @Override
     public List<ProveedorDTO> obtenerTodos() {
         List<ProveedorDTO> proveedores = new ArrayList<>();
         for(Proveedor p : proveedorRepository.findAll()){
-            proveedores.add(proveedorConverter.pojo2dto(p));
+            List<ArticuloDTO> articulos = articuloConverter.convertAllToDTO(p.getArticulos());
+            ProveedorDTO proveedorDTO = proveedorConverter.pojo2dto(p);
+            proveedorDTO.setArticulos(articulos);
+            proveedores.add(proveedorDTO);
         }
         return proveedores;
     }
@@ -34,5 +36,12 @@ public class ProveedorService implements IProveedorService{
     public ProveedorDTO obtenerPorId(Integer idproveedor) {
         return proveedorConverter.pojo2dto(proveedorRepository.findByIdproveedor(idproveedor));
     }
+
+    @Override
+    public List<ArticuloDTO> articulosPorProveedor(int idproveedor) {
+        Proveedor proveedor = proveedorRepository.findByIdproveedor(idproveedor);
+        return articuloConverter.convertAllToDTO(proveedor.getArticulos());
+    }
+
 
 }

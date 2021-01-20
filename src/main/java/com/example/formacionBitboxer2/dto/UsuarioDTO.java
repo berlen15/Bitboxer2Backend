@@ -1,6 +1,9 @@
 package com.example.formacionBitboxer2.dto;
 
-import com.example.formacionBitboxer2.entities.Reduccion;
+import com.example.formacionBitboxer2.Rol;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,9 +12,20 @@ public class UsuarioDTO implements Serializable {
     private Integer idusuario;
     private String nombreusuario;
     private String contraseña;
-    private String tipo;
-    private List<Reduccion> reducciones;
+    private Rol rol;
+    @JsonBackReference
+    private List<ReduccionDTO> reducciones;
+    private List<ArticuloDTO> articulos;
+
     private String token;
+
+    public List<ArticuloDTO> getArticulos() {
+        return articulos;
+    }
+
+    public void setArticulos(List<ArticuloDTO> articulos) {
+        this.articulos = articulos;
+    }
 
     public Integer getIdusuario() {
         return idusuario;
@@ -37,19 +51,19 @@ public class UsuarioDTO implements Serializable {
         this.contraseña = contraseña;
     }
 
-    public String getTipo() {
-        return tipo;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
-    public List<Reduccion> getReducciones() {
+    public List<ReduccionDTO> getReducciones() {
         return reducciones;
     }
 
-    public void setReducciones(List<Reduccion> reducciones) {
+    public void setReducciones(List<ReduccionDTO> reducciones) {
         this.reducciones = reducciones;
     }
 

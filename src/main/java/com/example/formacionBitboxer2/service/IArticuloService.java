@@ -11,8 +11,9 @@ public interface IArticuloService {
     public List<ArticuloDTO> obtenerTodos();
     public void guardarArticulo(ArticuloDTO articulo);
     public void actualizarArticulo(ArticuloDTO articulo);
+    public List<ArticuloDTO> findByProveedor(int idproveedor);
     public ArticuloDTO obtenerPorId(int id);
     public ArticuloDTO buscarPorId(int id);
-    public void addProveedor(int id, int idproveedor);
-    public void addReduccion(int id, ReduccionDTO reduccion);
+    public boolean addProveedor(int id,  ProveedorDTO proveedorDTO);
+    public boolean addReduccion(int idarticulo, int idusuario, ReduccionDTO reduccion);
 }

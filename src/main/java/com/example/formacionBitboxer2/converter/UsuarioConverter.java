@@ -16,8 +16,9 @@ public class UsuarioConverter {
         usuarioPojo.setNombreusuario(usuarioDTO.getNombreusuario());
         usuarioPojo.setContraseña(usuarioDTO.getContraseña());
         usuarioPojo.setToken(usuarioDTO.getToken());
-        usuarioPojo.setReducciones(usuarioDTO.getReducciones());
-        usuarioPojo.setTipo(usuarioDTO.getTipo());
+        usuarioPojo.setRol(usuarioDTO.getRol());
+       // usuarioPojo.setReducciones(usuarioDTO.getReducciones());
+        usuarioPojo.setRol(usuarioDTO.getRol());
         return usuarioPojo;
     }
 
@@ -33,8 +34,9 @@ public class UsuarioConverter {
         usuarioDTO.setNombreusuario(usuarioPojo.getNombreusuario());
         usuarioDTO.setContraseña(usuarioPojo.getContraseña());
         usuarioDTO.setToken(usuarioPojo.getToken());
-        usuarioDTO.setReducciones(usuarioPojo.getReducciones());
-        usuarioDTO.setTipo(usuarioPojo.getTipo());
+        usuarioDTO.setRol(usuarioPojo.getRol());
+       // usuarioDTO.setReducciones(usuarioPojo.getReducciones());
+        usuarioDTO.setRol(usuarioPojo.getRol());
 
 
         return usuarioDTO;

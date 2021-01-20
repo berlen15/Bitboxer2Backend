@@ -1,6 +1,7 @@
 package com.example.formacionBitboxer2.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,7 +17,7 @@ public class Articulo implements Serializable, Comparable<Articulo> {
 
     @Column(name="codigoarticulo", unique = true)
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private int codigoArticulo;
+    private Integer codigoarticulo;
 
     @Column(name="descripcion")
     private String descripcion;
@@ -27,7 +28,6 @@ public class Articulo implements Serializable, Comparable<Articulo> {
     @Column(name="estado", nullable = false)
     private Integer estado; //Estado 1 = venta, Estado 2 = descatalogado
 
-    @JsonIgnoreProperties("articulos")
     @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(
             name = "articulo_proveedor",
@@ -36,36 +36,47 @@ public class Articulo implements Serializable, Comparable<Articulo> {
     )
     private List<Proveedor> proveedor;
 
-    @JsonIgnoreProperties("articulo")
     @OneToMany (cascade = CascadeType.ALL, mappedBy = "articulo")
     private List <Reduccion> reducciones;
 
+    @ManyToOne
+    @JoinColumn(name="usuario_id", nullable = false)
+    private Usuario creador;
+
     public Articulo() {}
 
-    public Articulo(Integer idarticulo, int codigoArticulo, String descripcion, Double precio, int estado) {
+    public Articulo(Integer idarticulo, Integer codigoArticulo, String descripcion, Double precio, int estado) {
         this.idarticulo = idarticulo;
-        this.codigoArticulo = codigoArticulo;
+        this.codigoarticulo = codigoArticulo;
         this.descripcion = descripcion;
         this.precio = precio;
         this.estado = estado;
     }
 
-    public Articulo(int codigoArticulo, String descripcion, int estado) {
-        this.codigoArticulo = codigoArticulo;
+    public Articulo(Integer codigoArticulo, String descripcion, int estado) {
+        this.codigoarticulo = codigoArticulo;
         this.descripcion = descripcion;
         this.estado = estado;
+    }
+
+    public Usuario getCreador() {
+        return creador;
+    }
+
+    public void setCreador(Usuario creador) {
+        this.creador = creador;
     }
 
     public Integer getIdarticulo() {
         return idarticulo;
     }
 
-    public int getCodigoArticulo() {
-        return codigoArticulo;
+    public Integer getCodigoarticulo() {
+        return codigoarticulo;
     }
 
-    public void setCodigoArticulo(int codigoArticulo) {
-        this.codigoArticulo = codigoArticulo;
+    public void setCodigoarticulo(Integer codigoarticulo) {
+        this.codigoarticulo = codigoarticulo;
     }
 
     public String getDescripcion() {
@@ -121,7 +132,7 @@ public class Articulo implements Serializable, Comparable<Articulo> {
     }
     @Override
     public String toString(){
-        return "ID: "+this.idarticulo+" | CODIGO: "+this.codigoArticulo+ " | ESTADO: "+this.estado;
+        return "ID: "+this.idarticulo+" | CODIGO: "+this.codigoarticulo+ " | ESTADO: "+this.estado;
     }
 
     @Override

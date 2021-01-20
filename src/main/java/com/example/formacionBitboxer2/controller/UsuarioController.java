@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -24,12 +25,13 @@ public class UsuarioController implements ErrorController {
 
     private UsuarioConverter usuarioConverter= new UsuarioConverter();
 
-    @GetMapping("/usuarios")
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/usuarios")
     public List<UsuarioDTO> findAll(){
         return usuarioService.findAll();
     }
 
-    @GetMapping("/usuarios/{idusuario}")
+    @GetMapping("/admin/usuarios/{idusuario}")
     public @ResponseBody UsuarioDTO getById(@PathVariable("idusuario") int idusuario){
         return usuarioService.buscarPorId(idusuario);
     }

@@ -1,5 +1,7 @@
 package com.example.formacionBitboxer2.controller;
+import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.ProveedorDTO;
+import com.example.formacionBitboxer2.entities.Proveedor;
 import com.example.formacionBitboxer2.service.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -26,8 +28,14 @@ public class ProveedorController implements ErrorController {
     }
 
     @GetMapping("/proveedores/{id}")
-    public List<ProveedorDTO> obtenerPorId(@PathVariable("id") Integer idproveedor){
-        return proveedorService.obtenerTodos();
+    public ProveedorDTO obtenerPorId(@PathVariable("id") Integer idproveedor){
+        return proveedorService.obtenerPorId(idproveedor);
+    }
+
+    @GetMapping("/proveedor/{id}/articulos")
+    public List<ArticuloDTO> obtenerArticulosPorProveedor(@PathVariable(name="id") int idproveedor){
+        ProveedorDTO proveedor = proveedorService.obtenerPorId(idproveedor);
+        return proveedor.getArticulos();
     }
 
 }

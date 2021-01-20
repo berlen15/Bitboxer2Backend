@@ -5,13 +5,16 @@ import com.example.formacionBitboxer2.dto.UsuarioDTO;
 import com.example.formacionBitboxer2.entities.Usuario;
 import com.example.formacionBitboxer2.repository.IUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UsuarioService implements IUsuarioService {
+public class UsuarioService implements IUsuarioService, UserDetailsService {
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
@@ -41,4 +44,8 @@ public class UsuarioService implements IUsuarioService {
         return usuariosDTO;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return usuarioRepository.findByNombreusuario(s);
+    }
 }

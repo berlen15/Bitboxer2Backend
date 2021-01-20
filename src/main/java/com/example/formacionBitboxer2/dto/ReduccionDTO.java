@@ -2,6 +2,8 @@ package com.example.formacionBitboxer2.dto;
 
 import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.entities.Usuario;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -10,11 +12,12 @@ import java.util.Date;
 
 public class ReduccionDTO implements Serializable {
     private Integer idreduccion;
-    private Usuario creador;
     private Date creacion;
     private Date inicio;
     private Date fin;
-    private Articulo articulo;
+    private ArticuloDTO articulo;
+    private Double cantidad;
+    private boolean activo;
 
     public Integer getIdreduccion() {
         return idreduccion;
@@ -24,12 +27,12 @@ public class ReduccionDTO implements Serializable {
         this.idreduccion = idreduccion;
     }
 
-    public Usuario getCreador() {
-        return creador;
+    public boolean isActivo() {
+        return activo;
     }
 
-    public void setCreador(Usuario creador) {
-        this.creador = creador;
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     public Date getCreacion() {
@@ -56,11 +59,19 @@ public class ReduccionDTO implements Serializable {
         this.fin = fin;
     }
 
-    public Articulo getArticulo() {
+    public ArticuloDTO getArticulo() {
         return articulo;
     }
 
-    public void setArticulo(Articulo articulo) {
+    public void setArticulo(ArticuloDTO articulo) {
         this.articulo = articulo;
+    }
+
+    public Double getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Double cantidad) {
+        this.cantidad = cantidad;
     }
 }

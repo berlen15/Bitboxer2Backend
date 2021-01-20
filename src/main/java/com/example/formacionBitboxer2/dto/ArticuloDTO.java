@@ -1,31 +1,41 @@
 package com.example.formacionBitboxer2.dto;
 
-import com.example.formacionBitboxer2.entities.Proveedor;
-import com.example.formacionBitboxer2.entities.Reduccion;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.example.formacionBitboxer2.entities.Usuario;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 public class ArticuloDTO implements Serializable {
     private Integer idarticulo;
-    private int codigoArticulo;
+    private Integer codigoarticulo;
     private String descripcion;
     private Double precio;
     private Integer estado; //Estado 1 = venta, Estado 2 = descatalogado
-    private List<Proveedor> proveedor;
-    private List <Reduccion> reducciones;
+
+    private List<ProveedorDTO> proveedor;
+    private List<ReduccionDTO> reducciones;
+    @JsonBackReference
+    private Usuario creador;
+
+    public Usuario getCreador() {
+        return creador;
+    }
+
+    public void setCreador(Usuario creador) {
+        this.creador = creador;
+    }
 
     public Integer getIdarticulo() {
         return idarticulo;
     }
-    public int getCodigoArticulo() {
-        return codigoArticulo;
+
+    public Integer getCodigoarticulo() {
+        return codigoarticulo;
     }
 
-    public void setCodigoArticulo(int codigoArticulo) {
-        this.codigoArticulo = codigoArticulo;
+    public void setCodigoarticulo(Integer codigoarticulo) {
+        this.codigoarticulo = codigoarticulo;
     }
 
     public String getDescripcion() {
@@ -56,19 +66,19 @@ public class ArticuloDTO implements Serializable {
         this.estado = estado;
     }
 
-    public List<Proveedor> getProveedor() {
+    public List<ProveedorDTO> getProveedor() {
         return proveedor;
     }
 
-    public void setProveedor(List<Proveedor> proveedor) {
+    public void setProveedor(List<ProveedorDTO> proveedor) {
         this.proveedor = proveedor;
     }
 
-    public List<Reduccion> getReducciones() {
+    public List<ReduccionDTO> getReducciones() {
         return reducciones;
     }
 
-    public void setReducciones(List<Reduccion> reducciones) {
+    public void setReducciones(List<ReduccionDTO> reducciones) {
         this.reducciones = reducciones;
     }
 }

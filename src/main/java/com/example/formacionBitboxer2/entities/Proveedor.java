@@ -1,6 +1,6 @@
 package com.example.formacionBitboxer2.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,13 +14,12 @@ public class Proveedor implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idproveedor;
 
-    @Column(name="nombre", nullable = false)
+    @Column(name="nombre")
     private String nombre;
 
     @Column(name="pais")
     private String pais;
 
-    @JsonIgnoreProperties("proveedor")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "proveedor")
     private List<Articulo> articulos;
 

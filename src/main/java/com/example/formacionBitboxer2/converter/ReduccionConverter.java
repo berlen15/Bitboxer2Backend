@@ -6,16 +6,17 @@ import com.example.formacionBitboxer2.entities.Proveedor;
 import com.example.formacionBitboxer2.entities.Reduccion;
 
 public class ReduccionConverter {
+    private UsuarioConverter usuarioConverter = new UsuarioConverter();
     public Reduccion dto2pojo(ReduccionDTO reduccionDTO){
         Reduccion reduccionPojo = new Reduccion();
         if(reduccionDTO.getIdreduccion()!=null){
             reduccionPojo.setIdreduccion(reduccionDTO.getIdreduccion());
         }
         reduccionPojo.setIdreduccion(reduccionDTO.getIdreduccion());
-        reduccionPojo.setArticulo(reduccionDTO.getArticulo());
         reduccionPojo.setCreacion(reduccionDTO.getCreacion());
-        reduccionPojo.setCreador(reduccionDTO.getCreador());
+        reduccionPojo.setActivo(reduccionDTO.isActivo());
         reduccionPojo.setFin(reduccionDTO.getFin());
+        reduccionPojo.setCantidad(reduccionDTO.getCantidad());
         reduccionPojo.setInicio(reduccionDTO.getInicio());
         return reduccionPojo;
     }
@@ -25,10 +26,10 @@ public class ReduccionConverter {
         if(reduccion.getIdreduccion()!=null){
             reduccionDTO.setIdreduccion(reduccion.getIdreduccion());
         }
-        reduccionDTO.setArticulo(reduccion.getArticulo());
         reduccionDTO.setCreacion(reduccion.getCreacion());
-        reduccionDTO.setCreador(reduccion.getCreador());
+        reduccionDTO.setActivo(reduccion.isActivo());
         reduccionDTO.setFin(reduccion.getFin());
+        reduccionDTO.setCantidad(reduccion.getCantidad());
         reduccionDTO.setInicio(reduccion.getInicio());
         return reduccionDTO;
     }

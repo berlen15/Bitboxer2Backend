@@ -1,10 +1,14 @@
 package com.example.formacionBitboxer2.repository;
 
 import com.example.formacionBitboxer2.entities.Reduccion;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface IReduccionRepository {
-    void save(Reduccion reduccion);
+@Repository
+public interface IReduccionRepository extends CrudRepository<Reduccion, Integer> {
+    Reduccion save(Reduccion reduccion);
     List<Reduccion> findAllByArticulo(int idarticulo);
+    Reduccion findByIdreduccion(Integer idreduccion);
 }

@@ -16,33 +16,41 @@ public class Reduccion implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idreduccion;
 
-    @JsonIgnoreProperties("reducciones")
-    @ManyToOne
-    @JoinColumn(name="usuario_id", nullable = false)
-    private Usuario creador;
+    @Column(name="cantidad", nullable = false)
+    private Double cantidad;
 
-    @Column(name="creacion", nullable = false)
+    @Column(name="creacion")
     private Date creacion;
 
-    @Column(name="inicio", nullable = false)
+    @Column(name="inicio")
     private Date inicio;
 
     @Column(name="fin", nullable = false)
     private Date fin;
 
-
     @ManyToOne
-    @JoinColumn ( name = "articulo_id", nullable = false, updatable = false)
+    @JoinColumn ( name = "articulo_id", updatable = false)
     private Articulo articulo;
 
+    private boolean activo;
+
     public Reduccion(){}
-    public Reduccion(int idreduccion, Usuario creador, Date creacion, Date inicio, Date fin, Articulo articulo) {
+    public Reduccion(int idreduccion, Date creacion, Date inicio, Date fin, Articulo articulo, boolean activo) {
         this.idreduccion = idreduccion;
-        this.creador = creador;
         this.creacion = creacion;
         this.inicio = inicio;
         this.fin = fin;
         this.articulo = articulo;
+        this.activo=activo;
+    }
+
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     public Integer getIdreduccion() {
@@ -53,12 +61,12 @@ public class Reduccion implements Serializable {
         this.idreduccion = idreduccion;
     }
 
-    public Usuario getCreador() {
-        return creador;
+    public Double getCantidad() {
+        return cantidad;
     }
 
-    public void setCreador(Usuario creador) {
-        this.creador = creador;
+    public void setCantidad(Double cantidad) {
+        this.cantidad = cantidad;
     }
 
     public Date getCreacion() {

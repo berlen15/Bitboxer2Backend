@@ -1,8 +1,9 @@
 package com.example.formacionBitboxer2.dto;
 
 import com.example.formacionBitboxer2.entities.Articulo;
+import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class ProveedorDTO implements Serializable {
     private Integer idproveedor;
     private String nombre;
     private String pais;
+    @JsonBackReference
     private List<ArticuloDTO> articulos;
 
     public Integer getIdproveedor() {

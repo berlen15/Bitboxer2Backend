@@ -28,9 +28,9 @@ public class ReduccionService implements IReduccionService{
     private UsuarioConverter usuarioConverter = new UsuarioConverter();
 
     @Override
-    public void asociarArticulo(Integer idarticulo, ReduccionDTO reduccionDTO) {
+    public void asociarArticulo(int codigoarticulo, ReduccionDTO reduccionDTO) {
         Reduccion reduccion = reduccionConverter.dto2pojo(reduccionDTO);
-        Articulo articulo = articuloRepository.findOneByIdarticulo(idarticulo);
+        Articulo articulo = articuloRepository.findOneByCodigoarticulo(codigoarticulo);
         reduccion.setArticulo(articulo);
         reduccionRepository.save(reduccion);
     }

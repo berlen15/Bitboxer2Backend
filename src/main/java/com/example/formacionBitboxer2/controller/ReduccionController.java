@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Response;
@@ -19,6 +20,7 @@ public class ReduccionController implements ErrorController {
 
     private ReduccionConverter reduccionConverter = new ReduccionConverter();
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
     @PostMapping("/reducciones/{id}")
     public ResponseEntity actualizarEstadoReduccion(@PathVariable("id") Integer idreduccion, @RequestParam Boolean estado){
         Reduccion reduccion = reduccionConverter.dto2pojo(reduccionService.obtenerPorId(idreduccion));
@@ -29,11 +31,9 @@ public class ReduccionController implements ErrorController {
         }else{
             return new ResponseEntity(reduccion, HttpStatus.ACCEPTED);
         }
-
-
-
-
     }
+
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
     @GetMapping("/reducciones/{id}")
     public ReduccionDTO obtenerReduccion(@PathVariable("id") Integer idreduccion){
        return reduccionService.obtenerPorId(idreduccion);

@@ -15,4 +15,6 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, Integer> {
     List<Reduccion> findAllByNombreusuario(String nombreUsuario);
     Usuario findByNombreusuario(String nombreUsuario);
     Usuario findByIdusuario(int idusuario);
+    Usuario save(Usuario usuario);
+    void deleteByNombreusuario(String nombreusuario);
 }

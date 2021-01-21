@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IProveedorService {
     public Iterable<ProveedorDTO> obtenerTodos();
-    public ProveedorDTO obtenerPorId(Integer idproveedor);
-    List<ArticuloDTO> articulosPorProveedor(int idproveedor);
+    public ProveedorDTO obtenerPorNombre(String nombre);
+    List<ArticuloDTO> articulosPorProveedor(String nombre);
+    boolean guardarProveedor(ProveedorDTO proveedor);
 }

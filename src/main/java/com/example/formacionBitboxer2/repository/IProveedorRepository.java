@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface IProveedorRepository extends CrudRepository<Proveedor, Integer> {
-    Proveedor findByIdproveedor(int id);
+    Proveedor findByNombre(String nombre);
     List<Articulo> findAllByIdproveedor(int id);
+    Proveedor save(Proveedor proveedor);
 
 }

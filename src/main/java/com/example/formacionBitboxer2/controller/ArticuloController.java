@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 @RestController
 public class ArticuloController implements ErrorController {
@@ -33,9 +32,9 @@ public class ArticuloController implements ErrorController {
         return articuloService.obtenerTodos();
     }
 
-    @GetMapping("/articulos/{id}")
-    public ArticuloDTO obtenerPorId(@PathVariable(name="id") Integer id){
-        return articuloService.obtenerPorId(id);
+    @GetMapping("/articulos/{codigo}")
+    public ArticuloDTO obtenerPorId(@PathVariable(name="codigo") Integer codigo){
+        return articuloService.obtenerPorCodigoarticulo(codigo);
     }
 
 
@@ -69,8 +68,8 @@ public class ArticuloController implements ErrorController {
         return pageableArticales.getContent();
     }}
     * */
-
-    @PostMapping("/user/articulos")
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/articulos")
     public ResponseEntity guardar(@RequestBody ArticuloDTO articuloDTO){
         if(articuloDTO!=null){
             articuloService.guardarArticulo(articuloDTO);
@@ -80,13 +79,14 @@ public class ArticuloController implements ErrorController {
         }
 
     }
-    @PutMapping("/articulos/{id}")
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("/articulos/{codigo}")
     @ResponseBody
-    public ResponseEntity actualizar(@PathVariable("id") int id, @RequestBody ArticuloDTO articuloDTO){
+    public ResponseEntity actualizar(@PathVariable("codigo") int codigo, @RequestBody ArticuloDTO articuloDTO){
         if(articuloDTO.getDescripcion()==null && articuloDTO.getEstado()==null && articuloDTO.getPrecio()==null){
             return new ResponseEntity("El artículo está vacío",HttpStatus.BAD_REQUEST);
         }
-        Articulo articuloEditar = articuloConverter.dto2pojo(articuloService.obtenerPorId(id));
+        Articulo articuloEditar = articuloConverter.dto2pojo(articuloService.obtenerPorCodigoarticulo(codigo));
         if(articuloDTO.getPrecio()!=null){
             articuloEditar.setPrecio(articuloDTO.getPrecio());
         }
@@ -100,12 +100,13 @@ public class ArticuloController implements ErrorController {
         return new ResponseEntity("Se ha editado el artículo",HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/articulos/{id}/proveedores")
-    public ResponseEntity añadirProveedor(@PathVariable("id") int id, @RequestBody ProveedorDTO proveedorDTO){
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/articulos/{codigo}/proveedores")
+    public ResponseEntity añadirProveedor(@PathVariable("codigo") int codigo, @RequestBody ProveedorDTO proveedorDTO){
         if(proveedorDTO==null){
             return new ResponseEntity("El proveedor seleccionado no es válido", HttpStatus.BAD_REQUEST);
         }
-        if(articuloService.addProveedor(id, proveedorDTO)){
+        if(articuloService.addProveedor(codigo, proveedorDTO)){
             return new ResponseEntity("Se ha añadido el proveedor al artículo", HttpStatus.CREATED);
         }else{
             return new ResponseEntity("El proveedor ya está asociado al artículo", HttpStatus.BAD_REQUEST);
@@ -113,17 +114,30 @@ public class ArticuloController implements ErrorController {
 
     }
 
-    @PostMapping("/user/{idusuario}/articulos/{id}/reducciones")
-    public ResponseEntity añadirReduccion(@PathVariable("idusuario") int idusuario, @PathVariable("id") int id, @RequestBody ReduccionDTO reduccionDTO){
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/{nombreusuario}/articulos/{codigo}/reducciones")
+    public ResponseEntity añadirReduccion(@PathVariable("nombreusuario") String nombreusuario, @PathVariable("codigo") int codigo, @RequestBody ReduccionDTO reduccionDTO){
         if(reduccionDTO==null){
             return new ResponseEntity("La fecha de fin, ni creador ni la cantidad pueden estar vacíos", HttpStatus.BAD_REQUEST);
         }
         //Asociar reducción al artículo
-        if(articuloService.addReduccion(id, idusuario, reduccionDTO)){
+        if(articuloService.addReduccion(codigo, nombreusuario, reduccionDTO)){
             return new ResponseEntity("Se ha añadido la reducción de precio al artículo", HttpStatus.CREATED);
         }
         return new ResponseEntity("No eres el creador del artículo", HttpStatus.BAD_REQUEST);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/articulos/{codigo}")
+    public ResponseEntity eliminarArticulo( @PathVariable("codigo") int codigo){
+        if(articuloService.eliminarArticulo(codigo)){
+           return new ResponseEntity("El articulo ha sido eliminado con éxito", HttpStatus.ACCEPTED);
+       }else{
+           return new ResponseEntity("No se ha eliminado correctamente el artículo", HttpStatus.BAD_REQUEST);
+       }
+
+    }
+
     @Override
     public String getErrorPath() {
         return null;

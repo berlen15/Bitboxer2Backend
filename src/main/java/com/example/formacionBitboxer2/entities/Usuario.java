@@ -4,6 +4,8 @@ import com.example.formacionBitboxer2.Rol;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,12 +19,13 @@ import java.util.List;
 @Entity
 @Table(name="usuario")
 public class Usuario implements Serializable, UserDetails {
+    String ROLE_PREFIX = "ROLE_";
     @Id
     @Column(name="idusuario")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idusuario;
 
-    @Column(name="nombreusuario")
+    @Column(name="nombreusuario", unique = true)
     private String nombreusuario;
 
     @Column(name="contraseña")
@@ -48,6 +51,14 @@ public class Usuario implements Serializable, UserDetails {
         this.nombreusuario = nombreusuario;
         this.contraseña = contraseña;
         this.rol=rol;
+    }
+
+    public Usuario(String nombreusuario, String contraseña, Rol rol, List<Articulo> articulos) {
+        this.ROLE_PREFIX = ROLE_PREFIX;
+        this.nombreusuario = nombreusuario;
+        this.contraseña = contraseña;
+        this.rol = rol;
+        this.articulos = articulos;
     }
 
     public List<Articulo> getArticulos() {
@@ -101,7 +112,7 @@ public class Usuario implements Serializable, UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority(rol.toString()));
+        roles.add(new SimpleGrantedAuthority(ROLE_PREFIX+rol.name()));
         return roles;
     }
 

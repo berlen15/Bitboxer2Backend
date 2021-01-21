@@ -1,13 +1,14 @@
 package com.example.formacionBitboxer2.controller;
+
 import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.ProveedorDTO;
-import com.example.formacionBitboxer2.entities.Proveedor;
 import com.example.formacionBitboxer2.service.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,19 +23,32 @@ public class ProveedorController implements ErrorController {
         return null;
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
     @GetMapping("/proveedores")
     public List<ProveedorDTO> obtenerTodos(){
         return proveedorService.obtenerTodos();
     }
 
-    @GetMapping("/proveedores/{id}")
-    public ProveedorDTO obtenerPorId(@PathVariable("id") Integer idproveedor){
-        return proveedorService.obtenerPorId(idproveedor);
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
+    @PostMapping("/proveedores")
+    public ResponseEntity crearProveedor(@RequestBody ProveedorDTO proveedorDTO){
+        if(proveedorService.guardarProveedor(proveedorDTO)){
+            return new ResponseEntity(proveedorDTO, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity("No se ha podido guardar al proveedor en el sistema", HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @GetMapping("/proveedor/{id}/articulos")
-    public List<ArticuloDTO> obtenerArticulosPorProveedor(@PathVariable(name="id") int idproveedor){
-        ProveedorDTO proveedor = proveedorService.obtenerPorId(idproveedor);
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
+    @GetMapping("/proveedores/{nombre}")
+    public ProveedorDTO obtenerPorId(@PathVariable("nombre") String nombre){
+        return proveedorService.obtenerPorNombre(nombre);
+    }
+
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
+    @GetMapping("/proveedores/{nombre}/articulos")
+    public List<ArticuloDTO> obtenerArticulosPorProveedor(@PathVariable(name="nombre") String nombre){
+        ProveedorDTO proveedor = proveedorService.obtenerPorNombre(nombre);
         return proveedor.getArticulos();
     }
 

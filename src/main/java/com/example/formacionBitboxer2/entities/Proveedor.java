@@ -14,7 +14,7 @@ public class Proveedor implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idproveedor;
 
-    @Column(name="nombre")
+    @Column(name="nombre", unique = true)
     private String nombre;
 
     @Column(name="pais")

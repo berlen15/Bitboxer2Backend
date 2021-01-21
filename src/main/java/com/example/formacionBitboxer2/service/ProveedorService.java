@@ -33,14 +33,25 @@ public class ProveedorService implements IProveedorService{
     }
 
     @Override
-    public ProveedorDTO obtenerPorId(Integer idproveedor) {
-        return proveedorConverter.pojo2dto(proveedorRepository.findByIdproveedor(idproveedor));
+    public ProveedorDTO obtenerPorNombre(String nombre) {
+        return proveedorConverter.pojo2dto(proveedorRepository.findByNombre(nombre));
     }
 
     @Override
-    public List<ArticuloDTO> articulosPorProveedor(int idproveedor) {
-        Proveedor proveedor = proveedorRepository.findByIdproveedor(idproveedor);
+    public List<ArticuloDTO> articulosPorProveedor(String nombre) {
+        Proveedor proveedor = proveedorRepository.findByNombre(nombre);
         return articuloConverter.convertAllToDTO(proveedor.getArticulos());
+    }
+
+    @Override
+    public boolean guardarProveedor(ProveedorDTO proveedorDTO) {
+        Proveedor proveedorNuevo = proveedorConverter.dto2pojo(proveedorDTO);
+        proveedorRepository.save(proveedorNuevo);
+        List<Proveedor> proveedores = (List<Proveedor>) proveedorRepository.findAll();
+        if(proveedores.contains(proveedorNuevo)){
+            return true;
+        }
+        return false;
     }
 
 

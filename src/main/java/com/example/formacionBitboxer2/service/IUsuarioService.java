@@ -6,5 +6,7 @@ import com.example.formacionBitboxer2.entities.Usuario;
 public interface IUsuarioService {
     UsuarioDTO buscarPorId(int idusuario);
     UsuarioDTO buscarPorNombreUsuario(String nombreusuario);
-    void guardarUsuario(UsuarioDTO usuario);
+    boolean crearUsuario(UsuarioDTO usuario);
+    boolean eliminarUsuario(String nombreusuario);
+
 }

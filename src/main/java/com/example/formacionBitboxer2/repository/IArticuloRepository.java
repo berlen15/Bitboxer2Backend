@@ -11,12 +11,9 @@ import java.util.List;
 
 @Repository
 public interface IArticuloRepository extends CrudRepository<Articulo, Integer> {
-    List<Articulo> findByCodigoarticulo(int codigo);
-    Articulo findOneByIdarticulo(int id);
     Articulo findOneByCodigoarticulo(int codigo);
-    List<Articulo> findByProveedor(int idProveedor);
-    List<Reduccion> findAllByCodigoarticulo(int codigo);
+    Articulo getOneByCodigoarticulo(int codigo);
+    List<Articulo> findByProveedor(String nombre);
     Articulo getOneByIdarticulo(int id);
-    List<Proveedor> findAllByIdarticulo(int id);
-
+    void deleteByCodigoarticulo(int codigo);
 }

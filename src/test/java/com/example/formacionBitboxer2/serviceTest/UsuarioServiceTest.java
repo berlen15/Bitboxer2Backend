@@ -2,6 +2,7 @@ package com.example.formacionBitboxer2.serviceTest;
 
 import com.example.formacionBitboxer2.Rol;
 import com.example.formacionBitboxer2.converter.UsuarioConverter;
+import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.UsuarioDTO;
 import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.entities.Usuario;
@@ -17,6 +18,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +42,10 @@ public class UsuarioServiceTest {
         final Usuario usuario_2 = new Usuario ("belen2","belen2", Rol.valueOf("USER"), new ArrayList<Articulo>());
         final Usuario usuario_3 = new Usuario ("belen3","belen3", Rol.valueOf("USER"), new ArrayList<Articulo>());
         final Usuario usuario_4 = new Usuario ("admin","admin", Rol.valueOf("ADMIN"), new ArrayList<Articulo>());
-        Mockito.when(usuarioRepository.findByNombreusuario(usuario.getNombreusuario())).thenReturn(usuario);
-        Mockito.when(usuarioRepository.findByNombreusuario(usuario_2.getNombreusuario())).thenReturn(usuario);
-        Mockito.when(usuarioRepository.findByNombreusuario(usuario_3.getNombreusuario())).thenReturn(usuario);
-        Mockito.when(usuarioRepository.findByNombreusuario(usuario_4.getNombreusuario())).thenReturn(usuario);
+        when(usuarioRepository.findByNombreusuario(usuario.getNombreusuario())).thenReturn(usuario);
+        when(usuarioRepository.findByNombreusuario(usuario_2.getNombreusuario())).thenReturn(usuario);
+        when(usuarioRepository.findByNombreusuario(usuario_3.getNombreusuario())).thenReturn(usuario);
+        when(usuarioRepository.findByNombreusuario(usuario_4.getNombreusuario())).thenReturn(usuario);
 
     }
 
@@ -73,7 +77,7 @@ public class UsuarioServiceTest {
         final Usuario usuario_3 = new Usuario ("belen3","belen3", Rol.valueOf("USER"), new ArrayList<Articulo>());
         final Usuario usuario_4 = new Usuario ("admin","admin", Rol.valueOf("ADMIN"), new ArrayList<Articulo>());
         List<Usuario> usuarios = new ArrayList<>();
-        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
+        when(usuarioRepository.findAll()).thenReturn(usuarios);
         usuarios.add(usuario);
         usuarios.add(usuario_2);
         Assert.assertEquals(usuarioService.findAll().size(), 2);
@@ -82,4 +86,21 @@ public class UsuarioServiceTest {
         Assert.assertEquals(usuarioService.findAll().size(), 4);
     }
 
+    @Test
+    public void save_user() throws Exception{
+        final UsuarioDTO usuarioDto = new UsuarioDTO ();
+        usuarioDto.setNombreusuario("nuevo");
+        usuarioDto.setContraseña("nuevo");
+        usuarioDto.setArticulos(new ArrayList<ArticuloDTO>());
+        usuarioDto.setRol(Rol.valueOf("USER"));
+
+        when(usuarioRepository.findById(usuarioDto.getIdusuario())).thenReturn(null);
+        usuarioService.crearUsuario(usuarioDto);
+        Usuario usuario = usuarioConverter.dto2pojo(usuarioDto);
+        when(usuarioRepository.save(Mockito.any(Usuario.class))).thenReturn(usuario);
+
+        verify(usuarioRepository, times(1)).save(Mockito.any(Usuario.class));
+
+        Assert.assertEquals(usuarioDto.getNombreusuario(), usuario.getNombreusuario());
+    }
 }

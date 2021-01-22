@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="articulo")
@@ -139,17 +140,18 @@ public class Articulo implements Serializable, Comparable<Articulo> {
     public int compareTo(Articulo o) {
         return this.compareTo(o);
     }
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || obj == null || getClass() != obj.getClass())
-            return false;
-        Articulo that = (Articulo) obj;
-        return obj.equals(that.idarticulo);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Articulo articulo = (Articulo) o;
+        return Objects.equals(idarticulo, articulo.idarticulo) &&
+                Objects.equals(codigoarticulo, articulo.codigoarticulo);
     }
+
     @Override
     public int hashCode() {
-        return this == null ? 0 : this.hashCode();
+        return Objects.hash(idarticulo, codigoarticulo);
     }
 }

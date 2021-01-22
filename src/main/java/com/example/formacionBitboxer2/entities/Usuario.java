@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="usuario")
@@ -144,5 +145,19 @@ public class Usuario implements Serializable, UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(idusuario, usuario.idusuario) &&
+                Objects.equals(nombreusuario, usuario.nombreusuario);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idusuario, nombreusuario);
     }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="proveedor")
@@ -67,5 +68,19 @@ public class Proveedor implements Serializable {
 
     public void setArticulos(List<Articulo> articulos) {
         this.articulos = articulos;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Proveedor proveedor = (Proveedor) o;
+        return Objects.equals(idproveedor, proveedor.idproveedor) &&
+                Objects.equals(nombre, proveedor.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idproveedor, nombre);
     }
 }

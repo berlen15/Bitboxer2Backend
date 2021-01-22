@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name="reduccion")
@@ -99,5 +100,18 @@ public class Reduccion implements Serializable {
 
     public void setArticulo(Articulo articulo) {
         this.articulo = articulo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reduccion reduccion = (Reduccion) o;
+        return Objects.equals(idreduccion, reduccion.idreduccion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idreduccion);
     }
 }

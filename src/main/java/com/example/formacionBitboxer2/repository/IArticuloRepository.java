@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface IArticuloRepository extends CrudRepository<Articulo, Integer> {
-    Articulo findOneByCodigoarticulo(int codigo);
+    Articulo findByCodigoarticulo(Integer codigo);
     Articulo getOneByCodigoarticulo(int codigo);
     List<Articulo> findByProveedor(Proveedor proveedor);
     Articulo getOneByIdarticulo(int id);

@@ -19,11 +19,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -102,5 +101,14 @@ public class UsuarioServiceTest {
         verify(usuarioRepository, times(1)).save(Mockito.any(Usuario.class));
 
         Assert.assertEquals(usuarioDto.getNombreusuario(), usuario.getNombreusuario());
+    }
+
+    @Test
+    public void delete_user() throws Exception{
+        final Usuario usuario = new Usuario ("belen","belen", Rol.valueOf("USER"), new ArrayList<Articulo>());
+        usuarioService.eliminarUsuario(usuario.getNombreusuario());
+        Mockito.when(usuarioRepository.findByNombreusuario(usuario.getNombreusuario())).thenReturn(null);
+
+        Assert.assertEquals(usuarioService.buscarPorNombreUsuario(usuario.getNombreusuario()), null);
     }
 }

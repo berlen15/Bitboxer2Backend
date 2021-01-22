@@ -58,7 +58,7 @@ public class ArticuloService implements IArticuloService{
 
     @Override
     public ArticuloDTO obtenerPorCodigoarticulo(int codigo) {
-        return articuloConverter.pojo2dto(articuloRepository.findOneByCodigoarticulo(codigo));
+        return articuloConverter.pojo2dto(articuloRepository.findByCodigoarticulo(codigo));
     }
 
     //ONLY ADDS SUPPLIERS IF EXISTS ON DB
@@ -75,7 +75,7 @@ public class ArticuloService implements IArticuloService{
 
     @Override
     public boolean addReduccion(int codigo, String nombreusuario, ReduccionDTO reduccion) {
-        Articulo articulo = articuloRepository.findOneByCodigoarticulo(codigo);
+        Articulo articulo = articuloRepository.findByCodigoarticulo(codigo);
         Usuario usuario = usuarioRepository.findByNombreusuario(nombreusuario);
         if(articulo.getCreador().getNombreusuario()==usuario.getNombreusuario()){
             List<Reduccion> reducciones = articulo.getReducciones();
@@ -91,9 +91,8 @@ public class ArticuloService implements IArticuloService{
 
     @Override
     public boolean eliminarArticulo(int codigo) {
-        Articulo articuloEliminar = articuloRepository.getOneByCodigoarticulo(codigo);
-        articuloRepository.deleteById(articuloEliminar.getIdarticulo());
-        Articulo articulo = articuloRepository.findOneByCodigoarticulo(codigo);
+        articuloRepository.deleteByCodigoarticulo(codigo);
+        Articulo articulo = articuloRepository.findByCodigoarticulo(codigo);
         if(articulo==null){
             return true;
         }

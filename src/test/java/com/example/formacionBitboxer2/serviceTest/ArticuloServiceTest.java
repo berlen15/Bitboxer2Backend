@@ -1,6 +1,7 @@
 package com.example.formacionBitboxer2.serviceTest;
 
 import com.example.formacionBitboxer2.Rol;
+import com.example.formacionBitboxer2.converter.ArticuloConverter;
 import com.example.formacionBitboxer2.converter.UsuarioConverter;
 import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.UsuarioDTO;
@@ -24,6 +25,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class ArticuloServiceTest {
@@ -37,17 +40,20 @@ public class ArticuloServiceTest {
     @InjectMocks
     ArticuloService articuloService;
 
+    ArticuloConverter articuloConverter = new ArticuloConverter();
+
     @Before
     public void setUp(){
         final Usuario usuario = new Usuario ("belen","belen", Rol.valueOf("USER"), new ArrayList<Articulo>());
         final Articulo articulo = new Articulo(1001, "articulo 1", 1);
+        articulo.setCreador(usuario);
         final Articulo articulo_2 = new Articulo(1002, "articulo 2", 1);
         final Articulo articulo_3 = new Articulo(1003, "articulo 3", 1);
         final Articulo articulo_4 = new Articulo(1004, "articulo 4", 2);
-        Mockito.when(articuloRepository.findOneByCodigoarticulo(articulo.getCodigoarticulo())).thenReturn(articulo);
-        Mockito.when(articuloRepository.findOneByCodigoarticulo(articulo_2.getCodigoarticulo())).thenReturn(articulo_2);
-        Mockito.when(articuloRepository.findOneByCodigoarticulo(articulo_3.getCodigoarticulo())).thenReturn(articulo_3);
-        Mockito.when(articuloRepository.findOneByCodigoarticulo(articulo_4.getCodigoarticulo())).thenReturn(articulo_4);
+        Mockito.when(articuloRepository.findByCodigoarticulo(articulo.getCodigoarticulo())).thenReturn(articulo);
+        Mockito.when(articuloRepository.findByCodigoarticulo(articulo_2.getCodigoarticulo())).thenReturn(articulo_2);
+        Mockito.when(articuloRepository.findByCodigoarticulo(articulo_3.getCodigoarticulo())).thenReturn(articulo_3);
+        Mockito.when(articuloRepository.findByCodigoarticulo(articulo_4.getCodigoarticulo())).thenReturn(articulo_4);
         Mockito.when(usuarioRepository.findByNombreusuario("belen")).thenReturn(usuario);
     }
 
@@ -99,5 +105,35 @@ public class ArticuloServiceTest {
         articulos.remove(1);
         Assert.assertEquals(articuloService.obtenerTodos().size(),3);
     }
+
+    @Test
+    public void save_article(){
+        final Usuario usuario = new Usuario ("belen","belen", Rol.valueOf("USER"), new ArrayList<Articulo>());
+        final ArticuloDTO articuloDto = new ArticuloDTO ();
+        articuloDto.setCreador(usuario);
+        articuloDto.setPrecio(9.1);
+        articuloDto.setDescripcion("Articulo de prueba");
+        articuloDto.setEstado(1);
+        articuloDto.setCodigoarticulo(1009);
+
+
+        when(articuloRepository.findByCodigoarticulo(articuloDto.getCodigoarticulo())).thenReturn(null);
+        articuloService.guardarArticulo(articuloDto);
+        Articulo articulo = articuloConverter.dto2pojo(articuloDto);
+        when(articuloRepository.save(Mockito.any(Articulo.class))).thenReturn(articulo);
+
+        verify(articuloRepository, times(1)).save(Mockito.any(Articulo.class));
+
+        Assert.assertEquals(articuloDto.getCodigoarticulo(), articulo.getCodigoarticulo());
+    }
+
+    /*@Test
+    public void delete_article() throws Exception{
+        final Articulo articulo = new Articulo(1001, "articulo 1", 1);
+        articuloService.eliminarArticulo(articulo.getCodigoarticulo());
+        Mockito.when(articuloRepository.findByCodigoarticulo(articulo.getCodigoarticulo())).thenReturn(null);
+
+        Assert.assertEquals(articuloService.obtenerPorCodigoarticulo(articulo.getCodigoarticulo()), null);
+    }*/
 
 }

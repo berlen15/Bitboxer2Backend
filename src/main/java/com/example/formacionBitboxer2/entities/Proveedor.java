@@ -30,12 +30,6 @@ public class Proveedor implements Serializable {
         this.articulos = articulos;
     }
 
-    public Proveedor(int idproveedor, String nombre, String pais) {
-        this.idproveedor = idproveedor;
-        this.nombre = nombre;
-        this.pais = pais;
-    }
-
     public Proveedor(String nombre, String pais) {
         this.nombre = nombre;
         this.pais = pais;

@@ -20,15 +20,27 @@ public class Proveedor implements Serializable {
     @Column(name="pais")
     private String pais;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "proveedor")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "proveedor", cascade = CascadeType.ALL)
     private List<Articulo> articulos;
 
+    public Proveedor(Integer idproveedor, String nombre, String pais, List<Articulo> articulos) {
+        this.idproveedor = idproveedor;
+        this.nombre = nombre;
+        this.pais = pais;
+        this.articulos = articulos;
+    }
 
     public Proveedor(int idproveedor, String nombre, String pais) {
         this.idproveedor = idproveedor;
         this.nombre = nombre;
         this.pais = pais;
     }
+
+    public Proveedor(String nombre, String pais) {
+        this.nombre = nombre;
+        this.pais = pais;
+    }
+
     public Proveedor(){}
 
     public Integer getIdproveedor() {

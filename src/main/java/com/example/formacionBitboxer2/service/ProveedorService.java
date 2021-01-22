@@ -4,8 +4,8 @@ import com.example.formacionBitboxer2.converter.ArticuloConverter;
 import com.example.formacionBitboxer2.converter.ProveedorConverter;
 import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.ProveedorDTO;
-import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.entities.Proveedor;
+import com.example.formacionBitboxer2.repository.IArticuloRepository;
 import com.example.formacionBitboxer2.repository.IProveedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,19 @@ import java.util.List;
 
 @Service
 public class ProveedorService implements IProveedorService{
+
+    //INJECTIONS OF REPOSITORIES
     @Autowired
     private IProveedorRepository proveedorRepository;
 
+    @Autowired
+    private IArticuloRepository articuloRepository;
+
+    //CONVERTERS
     private ProveedorConverter proveedorConverter = new ProveedorConverter();
     private ArticuloConverter articuloConverter = new ArticuloConverter();
+    
+
     @Override
     public List<ProveedorDTO> obtenerTodos() {
         List<ProveedorDTO> proveedores = new ArrayList<>();
@@ -38,9 +46,24 @@ public class ProveedorService implements IProveedorService{
     }
 
     @Override
-    public List<ArticuloDTO> articulosPorProveedor(String nombre) {
+    public ArticuloDTO articuloMasBaratoPorProveedor(String nombre) {
         Proveedor proveedor = proveedorRepository.findByNombre(nombre);
-        return articuloConverter.convertAllToDTO(proveedor.getArticulos());
+        List<ArticuloDTO> articulos = articuloConverter.convertAllToDTO(articuloRepository.findByProveedor(proveedor));
+        if(articulos==null){
+            return null;
+        }
+
+        ArticuloDTO articuloBarato = articulos.get(0);
+
+        for(int i = 1; i<articulos.size(); i++){
+            ArticuloDTO articulo = articulos.get(i);
+            if(articulo.getPrecio()<articuloBarato.getPrecio()){
+                articuloBarato=articulo;
+            }else{
+                continue;
+            }
+        }
+        return articuloBarato;
     }
 
     @Override
@@ -53,6 +76,4 @@ public class ProveedorService implements IProveedorService{
         }
         return false;
     }
-
-
 }

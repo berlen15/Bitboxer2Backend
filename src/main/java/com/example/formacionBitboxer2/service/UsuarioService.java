@@ -24,11 +24,6 @@ public class UsuarioService implements IUsuarioService, UserDetailsService {
     private UsuarioConverter usuarioConverter = new UsuarioConverter();
 
     @Override
-    public UsuarioDTO buscarPorId(int idusuario) {
-        return  usuarioConverter.pojo2dto(usuarioRepository.findByIdusuario(idusuario));
-    }
-
-    @Override
     public UsuarioDTO buscarPorNombreUsuario(String nombreusuario) {
         return  usuarioConverter.pojo2dto(usuarioRepository.findByNombreusuario(nombreusuario));
     }

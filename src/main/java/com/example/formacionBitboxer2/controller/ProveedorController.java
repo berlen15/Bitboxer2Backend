@@ -52,4 +52,10 @@ public class ProveedorController implements ErrorController {
         return proveedor.getArticulos();
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
+    @GetMapping("/proveedores/{nombre}/articulos/masbarato")
+    public ArticuloDTO articuloMasBaratoProveedor(@PathVariable(name="nombre") String nombre){
+        return proveedorService.articuloMasBaratoPorProveedor(nombre);
+    }
+
 }

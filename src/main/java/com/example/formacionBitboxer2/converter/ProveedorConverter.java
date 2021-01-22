@@ -33,7 +33,6 @@ public class ProveedorConverter {
         }else{
             proveedorPojo.setArticulos(new ArrayList<>());
         }
-        proveedorPojo.setIdproveedor(proveedorDTO.getIdproveedor());
         proveedorPojo.setNombre(proveedorDTO.getNombre());
         proveedorPojo.setPais(proveedorDTO.getPais());
         return proveedorPojo;
@@ -53,7 +52,6 @@ public class ProveedorConverter {
         }else{
             proveedorDTO.setArticulos(new ArrayList<>());
         }
-        proveedorDTO.setIdproveedor(proveedor.getIdproveedor());
         proveedorDTO.setNombre(proveedor.getNombre());
         proveedorDTO.setPais(proveedor.getPais());
         return proveedorDTO;

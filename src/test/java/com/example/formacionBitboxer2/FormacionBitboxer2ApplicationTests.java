@@ -35,4 +35,9 @@ class FormacionBitboxer2ApplicationTests {
 		assertThat(proveedorController).isNotNull();
 	}
 
+	@Test
+	void articuloControllerTest(){
+		//assertThat(articuloController.obtenerTodos().size()==9);
+	}
+
 }

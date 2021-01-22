@@ -20,14 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EntityScan("com/example/formacionBitboxer2/entities")
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class FormacionBitboxer2Application {
-
-	//private static final Logger log = LoggerFactory.getLogger(FormacionBitboxer2Application.class);
-
 	public static void main(String[] args) {
 		SpringApplication.run(FormacionBitboxer2Application.class, args);
 	}
-
-
 
 	@EnableWebSecurity
 	@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
@@ -50,7 +45,7 @@ public class FormacionBitboxer2Application {
 					.antMatchers("/admin/**").hasRole("ADMIN")
 					.antMatchers("/user/**").hasRole("USER")
 					.antMatchers(HttpMethod.POST, "/login").permitAll()
-					.antMatchers(HttpMethod.GET, "/articulos").permitAll()
+					//.antMatchers(HttpMethod.GET, "/articulos").permitAll()
 					.anyRequest().authenticated();
 		}
 

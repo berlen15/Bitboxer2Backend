@@ -28,7 +28,7 @@ public class Articulo implements Serializable, Comparable<Articulo> {
     @Column(name="estado", nullable = false)
     private Integer estado; //Estado 1 = venta, Estado 2 = descatalogado
 
-    @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "articulo_proveedor",
             joinColumns = @JoinColumn(name="articulo_id", nullable = false),

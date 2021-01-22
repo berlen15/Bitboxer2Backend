@@ -61,13 +61,6 @@ public class ArticuloController implements ErrorController {
         return resultados;
     }
 
-    /*
-    * @GetMapping
-    public List<Articulo> list(@RequestParam int size, @RequestParam int page, @RequestParam string filtro, Model model){
-        Page<Articulo> pageableArticales = articlesRepository.findAll(searchArticleSpecification(search), PageRequest.of(page, limit);
-        return pageableArticales.getContent();
-    }}
-    * */
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/articulos")
     public ResponseEntity guardar(@RequestBody ArticuloDTO articuloDTO){

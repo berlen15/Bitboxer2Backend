@@ -13,7 +13,8 @@ import java.util.List;
 public interface IArticuloRepository extends CrudRepository<Articulo, Integer> {
     Articulo findOneByCodigoarticulo(int codigo);
     Articulo getOneByCodigoarticulo(int codigo);
-    List<Articulo> findByProveedor(String nombre);
+    List<Articulo> findByProveedor(Proveedor proveedor);
     Articulo getOneByIdarticulo(int id);
+    void deleteById(int id);
     void deleteByCodigoarticulo(int codigo);
 }

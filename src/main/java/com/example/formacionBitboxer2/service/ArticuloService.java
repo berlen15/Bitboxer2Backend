@@ -24,6 +24,8 @@ import java.util.List;
 @Service
 @Transactional
 public class ArticuloService implements IArticuloService{
+
+    //INJECTIONS OF REPOSITORIES
     @Autowired
     private IArticuloRepository articuloRepository;
     @Autowired
@@ -55,16 +57,11 @@ public class ArticuloService implements IArticuloService{
     }
 
     @Override
-    public void actualizarArticulo(ArticuloDTO articuloDTO) {
-        Articulo articuloActualizar = articuloRepository.getOneByIdarticulo(articuloDTO.getIdarticulo());
-
-    }
-    @Override
     public ArticuloDTO obtenerPorCodigoarticulo(int codigo) {
         return articuloConverter.pojo2dto(articuloRepository.findOneByCodigoarticulo(codigo));
     }
 
-    /*SOLO AÑADE PROVEEDORES YA EXISTENTES EN EL SISTEMA*/
+    //ONLY ADDS SUPPLIERS IF EXISTS ON DB
     @Override
     public boolean addProveedor(int codigo, ProveedorDTO proveedorDTO) {
         Articulo articulo = articuloRepository.getOneByCodigoarticulo(codigo);
@@ -94,7 +91,8 @@ public class ArticuloService implements IArticuloService{
 
     @Override
     public boolean eliminarArticulo(int codigo) {
-        articuloRepository.deleteByCodigoarticulo(codigo);
+        Articulo articuloEliminar = articuloRepository.getOneByCodigoarticulo(codigo);
+        articuloRepository.deleteById(articuloEliminar.getIdarticulo());
         Articulo articulo = articuloRepository.findOneByCodigoarticulo(codigo);
         if(articulo==null){
             return true;

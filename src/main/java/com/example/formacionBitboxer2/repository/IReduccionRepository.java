@@ -9,6 +9,5 @@ import java.util.List;
 @Repository
 public interface IReduccionRepository extends CrudRepository<Reduccion, Integer> {
     Reduccion save(Reduccion reduccion);
-    List<Reduccion> findAllByArticulo(int idarticulo);
     Reduccion findByIdreduccion(Integer idreduccion);
 }

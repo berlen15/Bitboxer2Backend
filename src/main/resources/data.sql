@@ -12,6 +12,7 @@ insert into proveedor (idproveedor, nombre, pais)values(2,'Ikea Suecia', 'Suecia
 insert into proveedor (idproveedor, nombre, pais)values(3,'La Quinta Puerta', 'España');
 
 insert into articulo_proveedor (proveedor_id, articulo_id)values(1,1);
+insert into articulo_proveedor (proveedor_id, articulo_id)values(1,2);
 insert into articulo_proveedor (proveedor_id, articulo_id)values(2,2);
 insert into articulo_proveedor (proveedor_id, articulo_id)values(3,3);
 

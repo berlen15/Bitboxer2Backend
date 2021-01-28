@@ -33,8 +33,8 @@ public class ReduccionService implements IReduccionService{
     }
 
     @Override
-    public ReduccionDTO obtenerPorId(Integer idreduccion) {
-        return reduccionConverter.pojo2dto(reduccionRepository.findByIdreduccion(idreduccion));
+    public ReduccionDTO obtenerPorCodigoreduccion(Integer codigo) {
+        return reduccionConverter.pojo2dto(reduccionRepository.findByCodigoreduccion(codigo));
     }
 
     @Override

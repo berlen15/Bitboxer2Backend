@@ -65,6 +65,9 @@ public class ArticuloService implements IArticuloService{
     @Override
     public boolean addProveedor(int codigo, ProveedorDTO proveedorDTO) {
         Articulo articulo = articuloRepository.getOneByCodigoarticulo(codigo);
+        if(articulo.getProveedor()==null){
+            articulo.setProveedor(new ArrayList<Proveedor>());
+        }
         Proveedor proveedor = proveedorRepository.findByNombre(proveedorDTO.getNombre());
         if(!articulo.getProveedor().contains(proveedor)){
             articulo.addProveedor(proveedor);
@@ -98,5 +101,11 @@ public class ArticuloService implements IArticuloService{
         }
         return false;
 
+    }
+
+    @Override
+    public List<ArticuloDTO> obtenerTodosPorUsuario(String nombreusuario) {
+        Usuario usuario = usuarioRepository.findByNombreusuario(nombreusuario);
+        return articuloConverter.convertAllToDTO(articuloRepository.findByCreador(usuario));
     }
 }

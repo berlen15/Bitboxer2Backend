@@ -19,6 +19,9 @@ public class ProveedorConverter {
 
     public Proveedor dto2pojo(ProveedorDTO proveedorDTO){
         Proveedor proveedorPojo = new Proveedor();
+        if(proveedorDTO==null){
+            return null;
+        }
         if(proveedorDTO.getIdproveedor()!=null){
             proveedorPojo.setIdproveedor(proveedorDTO.getIdproveedor());
         }
@@ -40,6 +43,9 @@ public class ProveedorConverter {
 
     public ProveedorDTO pojo2dto(Proveedor proveedor){
         ProveedorDTO proveedorDTO = new ProveedorDTO();
+        if(proveedor==null){
+            return null;
+        }
         if(proveedor.getIdproveedor()!=null){
             proveedorDTO.setIdproveedor(proveedor.getIdproveedor());
         }

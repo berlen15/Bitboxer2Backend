@@ -48,22 +48,24 @@ public class ProveedorService implements IProveedorService{
     @Override
     public ArticuloDTO articuloMasBaratoPorProveedor(String nombre) {
         Proveedor proveedor = proveedorRepository.findByNombre(nombre);
-        List<ArticuloDTO> articulos = articuloConverter.convertAllToDTO(articuloRepository.findByProveedor(proveedor));
-        if(articulos==null){
-            return null;
-        }
-
-        ArticuloDTO articuloBarato = articulos.get(0);
-
-        for(int i = 1; i<articulos.size(); i++){
-            ArticuloDTO articulo = articulos.get(i);
-            if(articulo.getPrecio()<articuloBarato.getPrecio()){
-                articuloBarato=articulo;
-            }else{
-                continue;
+        if(proveedor.getArticulos().size()>0){
+            List<ArticuloDTO> articulos = articuloConverter.convertAllToDTO(proveedor.getArticulos());
+            if(articulos==null){
+                return null;
             }
+            ArticuloDTO articuloBarato = articulos.get(0);
+
+            for(int i = 1; i<articulos.size(); i++){
+                ArticuloDTO articulo = articulos.get(i);
+                if(articulo.getPrecio()<articuloBarato.getPrecio()){
+                    articuloBarato=articulo;
+                }else{
+                    continue;
+                }
+            }
+            return articuloBarato;
         }
-        return articuloBarato;
+        return null;
     }
 
     @Override

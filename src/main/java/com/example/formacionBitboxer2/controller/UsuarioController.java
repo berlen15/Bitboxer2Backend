@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 @RestController
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class UsuarioController implements ErrorController {
 
     @Autowired
@@ -48,6 +48,13 @@ public class UsuarioController implements ErrorController {
         return usuarioService.buscarPorNombreUsuario(nombreusuario);
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/{nombreusuario}")
+    public @ResponseBody
+    UsuarioDTO obtenerMiInformacion(@PathVariable("nombreusuario") String nombreusuario) {
+        return usuarioService.buscarPorNombreUsuario(nombreusuario);
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/usuarios")
     public ResponseEntity crearUsuario(@RequestBody UsuarioDTO usuarioDTO){
@@ -56,8 +63,9 @@ public class UsuarioController implements ErrorController {
         }else{
             return new ResponseEntity("El usuario ya existe o no es válido", HttpStatus.BAD_REQUEST);
         }
-
     }
+
+
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/usuarios/{nombreusuario}")
     public ResponseEntity eliminarUsuario(@PathVariable("nombreusuario") String nombreusuario){

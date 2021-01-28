@@ -33,9 +33,10 @@ public class ArticuloController implements ErrorController {
     }
 
     @GetMapping("/articulos/{codigo}")
-    public ArticuloDTO obtenerPorId(@PathVariable(name="codigo") Integer codigo){
+    public ArticuloDTO obtenerPorCodigo(@PathVariable(name="codigo") Integer codigo){
         return articuloService.obtenerPorCodigoarticulo(codigo);
     }
+
 
 
     @GetMapping("/articulos/filter")
@@ -60,8 +61,13 @@ public class ArticuloController implements ErrorController {
         }
         return resultados;
     }
-
     @PreAuthorize("hasRole('USER')")
+    @GetMapping("/articulos/usuarios/{nombreusuario}")
+    public List<ArticuloDTO> obtenerArticulosPorUsuario(@PathVariable(name="nombreusuario") String nombreusuario){
+        return articuloService.obtenerTodosPorUsuario(nombreusuario);
+    }
+
+
     @PostMapping("/articulos")
     public ResponseEntity guardar(@RequestBody ArticuloDTO articuloDTO){
         if(articuloDTO!=null){

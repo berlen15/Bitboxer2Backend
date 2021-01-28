@@ -13,4 +13,5 @@ public interface IArticuloService {
     public boolean addProveedor(int id,  ProveedorDTO proveedorDTO);
     public boolean addReduccion(int codigo, String nombreusuario, ReduccionDTO reduccion);
     public boolean eliminarArticulo(int codigo);
+    public List<ArticuloDTO> obtenerTodosPorUsuario(String nombreusuario);
 }

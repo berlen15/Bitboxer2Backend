@@ -1,5 +1,8 @@
 package com.example.formacionBitboxer2.serviceTest;
 
+import com.example.formacionBitboxer2.converter.ProveedorConverter;
+import com.example.formacionBitboxer2.dto.ArticuloDTO;
+import com.example.formacionBitboxer2.dto.ProveedorDTO;
 import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.entities.Proveedor;
 import com.example.formacionBitboxer2.repository.IProveedorRepository;
@@ -18,6 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class ProveedorServiceTest {
@@ -26,6 +31,8 @@ public class ProveedorServiceTest {
 
     @InjectMocks
     ProveedorService proveedorService;
+
+    private ProveedorConverter proveedorConverter = new ProveedorConverter();
 
     @Before
     public void setUp(){
@@ -45,7 +52,7 @@ public class ProveedorServiceTest {
     }
 
     @Test
-    public void should_return_notnull(){
+    public void obtener_por_nombre_TEST(){
         Assert.assertNotNull(proveedorService.obtenerPorNombre("empresa1"));
         Assert.assertNotNull(proveedorService.obtenerPorNombre("empresa2"));
         Assert.assertNotNull(proveedorService.obtenerPorNombre("empresa3"));
@@ -55,13 +62,13 @@ public class ProveedorServiceTest {
     }
 
     @Test
-    public void shlould_return_country(){
+    public void obtener_pais_TEST(){
         Assert.assertEquals(proveedorService.obtenerPorNombre("empresa1").getPais(), "España");
         Assert.assertEquals(proveedorService.obtenerPorNombre("empresa3").getPais(), "Suecia");
         Assert.assertEquals(proveedorService.obtenerPorNombre("empresa4").getPais(), "Japón");
     }
     @Test
-    public void should_return_size_articles_list(){
+    public void obtener_numero_articulos_TEST(){
         Proveedor proveedor = new Proveedor(1, "empresa_nueva", "España", new ArrayList<Articulo>());
         Mockito.when(proveedorRepository.findByNombre(proveedor.getNombre())).thenReturn(proveedor);
         Assert.assertEquals(proveedorRepository.findByNombre(proveedor.getNombre()).getArticulos().size(),0);
@@ -78,6 +85,54 @@ public class ProveedorServiceTest {
         //Lista con dos artículos
         articulos.add(articulo_2);
         Assert.assertEquals(proveedorRepository.findByNombre(proveedor.getNombre()).getArticulos().size(),2);
+    }
 
+    @Test
+    public void guardar_proveedor_TEST(){
+        final ProveedorDTO proveedorDTO = new ProveedorDTO ();
+        proveedorDTO.setPais("España");
+        proveedorDTO.setNombre("proveedor-nuevo");
+        //Lista de articulos para el proveedor
+        List<ArticuloDTO> articulos = new ArrayList<>();
+        proveedorDTO.setArticulos(articulos); //asignación
+        ArticuloDTO articulo = new ArticuloDTO();
+        ArticuloDTO articulo_2 = new ArticuloDTO();
+
+        articulos.add(articulo);
+        articulos.add(articulo_2);
+
+        when(proveedorRepository.findByNombre(proveedorDTO.getNombre())).thenReturn(null);
+        proveedorService.guardarProveedor(proveedorDTO);
+        Proveedor proveedor = proveedorConverter.dto2pojo(proveedorDTO);
+        when(proveedorRepository.save(Mockito.any(Proveedor.class))).thenReturn(proveedor);
+
+        verify(proveedorRepository, times(1)).save(Mockito.any(Proveedor.class));
+
+        Assert.assertEquals(proveedorDTO.getNombre(), proveedor.getNombre());
+        Assert.assertEquals(proveedorDTO.getPais(), proveedor.getPais());
+        Assert.assertEquals(proveedorDTO.getArticulos().size(), proveedor.getArticulos().size());
+    }
+
+    @Test
+    public void obtener_articulo_mas_barato_TEST(){
+        Proveedor proveedor = new Proveedor(1, "empresa_nueva", "España", new ArrayList<Articulo>());
+        final Articulo articulo = new Articulo(1002, "articulo 2", 1);
+        articulo.setPrecio(1.9);
+        final Articulo articulo_2 = new Articulo(1003, "articulo 3", 1);
+        articulo_2.setPrecio(2.9);
+        final Articulo articulo_3 = new Articulo(1004, "articulo 4", 2);
+        articulo_3.setPrecio(3.9);
+        List<Articulo> articulos = new ArrayList<>();
+        articulos.add(articulo);
+        articulos.add(articulo_2);
+        articulos.add(articulo_3);
+        proveedor.setArticulos(articulos);
+        Mockito.when(proveedorRepository.findByNombre(proveedor.getNombre())).thenReturn(proveedor);
+
+        final double DELTA = 1e-15;
+        ArticuloDTO articulo_barato = proveedorService.articuloMasBaratoPorProveedor(proveedor.getNombre());
+        Assert.assertEquals(0, Double.compare(articulo_barato.getPrecio(), 1.9));
+        Assert.assertNotEquals(0, Double.compare(articulo_barato.getPrecio(), 2.9));
+        Assert.assertNotEquals(0, Double.compare(articulo_barato.getPrecio(), 3.9));
     }
 }

@@ -2,15 +2,14 @@ package com.example.formacionBitboxer2.serviceTest;
 
 import com.example.formacionBitboxer2.Rol;
 import com.example.formacionBitboxer2.converter.ArticuloConverter;
-import com.example.formacionBitboxer2.converter.UsuarioConverter;
+import com.example.formacionBitboxer2.converter.ReduccionConverter;
 import com.example.formacionBitboxer2.dto.ArticuloDTO;
-import com.example.formacionBitboxer2.dto.UsuarioDTO;
 import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.entities.Usuario;
 import com.example.formacionBitboxer2.repository.IArticuloRepository;
+import com.example.formacionBitboxer2.repository.IReduccionRepository;
 import com.example.formacionBitboxer2.repository.IUsuarioRepository;
 import com.example.formacionBitboxer2.service.ArticuloService;
-import com.example.formacionBitboxer2.service.UsuarioService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,14 +20,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.Silent.class)
+@SpringBootTest
 public class ArticuloServiceTest {
 
     @Mock
@@ -40,16 +42,22 @@ public class ArticuloServiceTest {
     @InjectMocks
     ArticuloService articuloService;
 
+    @Mock
+    IReduccionRepository reduccionRepository;
+
+    private ReduccionConverter reduccionConverter = new ReduccionConverter();
+
     ArticuloConverter articuloConverter = new ArticuloConverter();
 
     @Before
     public void setUp(){
         final Usuario usuario = new Usuario ("belen","belen", Rol.valueOf("USER"), new ArrayList<Articulo>());
-        final Articulo articulo = new Articulo(1001, "articulo 1", 1);
+        final Articulo articulo = new Articulo(1,1001, "articulo 1", 8.9,1);
         articulo.setCreador(usuario);
-        final Articulo articulo_2 = new Articulo(1002, "articulo 2", 1);
-        final Articulo articulo_3 = new Articulo(1003, "articulo 3", 1);
-        final Articulo articulo_4 = new Articulo(1004, "articulo 4", 2);
+        usuario.setArticulos(new ArrayList<>(Arrays.asList(articulo)));
+        final Articulo articulo_2 = new Articulo(2,1002, "articulo 2",9.1, 1);
+        final Articulo articulo_3 = new Articulo(3,1003, "articulo 3",3.9, 1);
+        final Articulo articulo_4 = new Articulo(4,1004, "articulo 4",3.1, 2);
         Mockito.when(articuloRepository.findByCodigoarticulo(articulo.getCodigoarticulo())).thenReturn(articulo);
         Mockito.when(articuloRepository.findByCodigoarticulo(articulo_2.getCodigoarticulo())).thenReturn(articulo_2);
         Mockito.when(articuloRepository.findByCodigoarticulo(articulo_3.getCodigoarticulo())).thenReturn(articulo_3);
@@ -58,7 +66,7 @@ public class ArticuloServiceTest {
     }
 
     @Test
-    public void should_return_notnull_article_exist(){
+    public void obtener_usuario_existente_TEST(){
         Assert.assertNotNull(articuloService.obtenerPorCodigoarticulo(1001));
         Assert.assertNotNull(articuloService.obtenerPorCodigoarticulo(1002));
         Assert.assertNotNull(articuloService.obtenerPorCodigoarticulo(1003));
@@ -66,7 +74,7 @@ public class ArticuloServiceTest {
     }
 
     @Test
-    public void should_return_state_1(){
+    public void obtener_estado_1_articulos_TEST(){
         Assert.assertEquals(articuloService.obtenerPorCodigoarticulo(1001).getEstado().intValue(),1);
         Assert.assertNotEquals(articuloService.obtenerPorCodigoarticulo(1001).getEstado().intValue(),2);
 
@@ -79,13 +87,13 @@ public class ArticuloServiceTest {
     }
 
     @Test
-    public void should_return_state_2(){
+    public void obtener_estado_2_articulos_TEST(){
         Assert.assertEquals(articuloService.obtenerPorCodigoarticulo(1004).getEstado().intValue(),2);
         Assert.assertNotEquals(articuloService.obtenerPorCodigoarticulo(1004).getEstado().intValue(),1);
     }
 
     @Test
-    public void should_return_size(){
+    public void obtener_numero_articulos_TEST(){
         Assert.assertEquals(articuloService.obtenerTodos().size(),0);
         //4 artículos
         List<Articulo> articulos = new ArrayList<>();
@@ -107,7 +115,7 @@ public class ArticuloServiceTest {
     }
 
     @Test
-    public void save_article(){
+    public void guardar_articulo_TEST(){
         final Usuario usuario = new Usuario ("belen","belen", Rol.valueOf("USER"), new ArrayList<Articulo>());
         final ArticuloDTO articuloDto = new ArticuloDTO ();
         articuloDto.setCreador(usuario);
@@ -127,13 +135,13 @@ public class ArticuloServiceTest {
         Assert.assertEquals(articuloDto.getCodigoarticulo(), articulo.getCodigoarticulo());
     }
 
-    /*@Test
-    public void delete_article() throws Exception{
+    @Test
+    public void eliminar_articulo_TEST() throws Exception{
+
         final Articulo articulo = new Articulo(1001, "articulo 1", 1);
         articuloService.eliminarArticulo(articulo.getCodigoarticulo());
         Mockito.when(articuloRepository.findByCodigoarticulo(articulo.getCodigoarticulo())).thenReturn(null);
 
-        Assert.assertEquals(articuloService.obtenerPorCodigoarticulo(articulo.getCodigoarticulo()), null);
-    }*/
-
+        Assert.assertNull(articuloService.obtenerPorCodigoarticulo(articulo.getCodigoarticulo()));
+    }
 }

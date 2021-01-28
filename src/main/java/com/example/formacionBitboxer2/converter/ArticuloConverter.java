@@ -22,6 +22,10 @@ public class ArticuloConverter {
 
     public Articulo dto2pojo(ArticuloDTO articuloDTO){
         Articulo articuloPojo = new Articulo();
+
+        if(articuloDTO==null){
+            return null;
+        }
         if(articuloDTO.getIdarticulo()!=null){
             articuloPojo.setIdarticulo(articuloDTO.getIdarticulo());
         }
@@ -50,6 +54,9 @@ public class ArticuloConverter {
     
     public ArticuloDTO pojo2dto(Articulo articulo){
         ArticuloDTO articuloDTO = new ArticuloDTO();
+        if(articulo==null){
+            return null;
+        }
         if(articulo.getIdarticulo()!=null){
             articuloDTO.setIdarticulo(articulo.getIdarticulo());
         }

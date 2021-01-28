@@ -33,18 +33,39 @@ public class Reduccion implements Serializable {
     @JoinColumn ( name = "articulo_id", updatable = false)
     private Articulo articulo;
 
+    @Column(name="codigoreduccion", unique = true)
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer codigoreduccion;
+
     private boolean activo;
 
     public Reduccion(){}
-    public Reduccion(int idreduccion, Date creacion, Date inicio, Date fin, Articulo articulo, boolean activo) {
+    public Reduccion(int idreduccion, int codigoreduccion, Date creacion, Date inicio, Date fin, Articulo articulo, boolean activo) {
         this.idreduccion = idreduccion;
         this.creacion = creacion;
         this.inicio = inicio;
         this.fin = fin;
         this.articulo = articulo;
         this.activo=activo;
+        this.codigoreduccion=codigoreduccion;
     }
 
+    public Reduccion(Double cantidad, Date fin, Articulo articulo, Integer codigoreduccion, boolean activo) {
+        this.cantidad = cantidad;
+        this.fin = fin;
+        this.articulo = articulo;
+        this.codigoreduccion = codigoreduccion;
+        this.activo = activo;
+        this.codigoreduccion=articulo.getIdarticulo()*this.idreduccion;
+    }
+
+    public Integer getCodigoreduccion() {
+        return codigoreduccion;
+    }
+
+    public void setCodigoreduccion(Integer codigoreduccion) {
+        this.codigoreduccion = codigoreduccion;
+    }
 
     public boolean isActivo() {
         return activo;

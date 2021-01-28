@@ -16,6 +16,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @EntityScan("com/example/formacionBitboxer2/entities")
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
@@ -27,7 +32,8 @@ public class FormacionBitboxer2Application {
 	@EnableWebSecurity
 	@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
 	@Configuration
-	class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	@CrossOrigin(origins= "*")
+	class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer{
 		@Autowired
 		UserDetailsService userDetailsService;
 
@@ -39,14 +45,22 @@ public class FormacionBitboxer2Application {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
+			http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
 			http.csrf().disable()
 					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 					.authorizeRequests()
 					.antMatchers("/admin/**").hasRole("ADMIN")
 					.antMatchers("/user/**").hasRole("USER")
 					.antMatchers(HttpMethod.POST, "/login").permitAll()
-					//.antMatchers(HttpMethod.GET, "/articulos").permitAll()
+					.antMatchers(HttpMethod.GET, "/articulos").permitAll()
 					.anyRequest().authenticated();
+		}
+
+		@Override
+		public void addCorsMappings(CorsRegistry registry) {
+			registry.addMapping("/**")
+					//.allowedOrigins("http://localhost:8080")
+					.allowedMethods("GET", "POST", "PUT", "DELETE");
 		}
 
 		@Override

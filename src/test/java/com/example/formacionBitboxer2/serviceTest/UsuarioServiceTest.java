@@ -50,7 +50,7 @@ public class UsuarioServiceTest {
 
 
     @Test
-    public void should_return_null_user_because_not_exist(){
+    public void obtener_usuario_no_existente_TEST(){
         final Usuario usuario = new Usuario ("nuevo","nuevo", Rol.valueOf("USER"), new ArrayList<Articulo>());
         final Usuario usuario_2 = new Usuario();
         Assert.assertNull(usuarioService.buscarPorNombreUsuario(usuario.getNombreusuario()));
@@ -58,7 +58,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void should_return_user_because_exist(){
+    public void obtener_usuario_existente_TEST(){
         String nombreusuario = "belen";
         UsuarioDTO usuario = usuarioService.buscarPorNombreUsuario(nombreusuario);
         Assert.assertEquals(usuario.getNombreusuario(), "belen");
@@ -70,7 +70,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void should_return_number_of_users(){
+    public void obtener_numero_usuarios_TEST(){
         final Usuario usuario = new Usuario ("belen","belen", Rol.valueOf("USER"), new ArrayList<Articulo>());
         final Usuario usuario_2 = new Usuario ("belen2","belen2", Rol.valueOf("USER"), new ArrayList<Articulo>());
         final Usuario usuario_3 = new Usuario ("belen3","belen3", Rol.valueOf("USER"), new ArrayList<Articulo>());
@@ -86,7 +86,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void save_user() throws Exception{
+    public void guardar_usuario_TEST() throws Exception{
         final UsuarioDTO usuarioDto = new UsuarioDTO ();
         usuarioDto.setNombreusuario("nuevo");
         usuarioDto.setContraseña("nuevo");
@@ -104,7 +104,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void delete_user() throws Exception{
+    public void eliminar_usuario_TEST() throws Exception{
         final Usuario usuario = new Usuario ("belen","belen", Rol.valueOf("USER"), new ArrayList<Articulo>());
         usuarioService.eliminarUsuario(usuario.getNombreusuario());
         Mockito.when(usuarioRepository.findByNombreusuario(usuario.getNombreusuario())).thenReturn(null);

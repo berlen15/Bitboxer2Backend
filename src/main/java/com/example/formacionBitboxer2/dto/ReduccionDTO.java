@@ -1,12 +1,5 @@
 package com.example.formacionBitboxer2.dto;
 
-import com.example.formacionBitboxer2.entities.Articulo;
-import com.example.formacionBitboxer2.entities.Usuario;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,6 +11,15 @@ public class ReduccionDTO implements Serializable {
     private ArticuloDTO articulo;
     private Double cantidad;
     private boolean activo;
+    private Integer codigoreduccion;
+
+    public Integer getCodigoreduccion() {
+        return codigoreduccion;
+    }
+
+    public void setCodigoreduccion(Integer codigoreduccion) {
+        this.codigoreduccion = codigoreduccion;
+    }
 
     public Integer getIdreduccion() {
         return idreduccion;

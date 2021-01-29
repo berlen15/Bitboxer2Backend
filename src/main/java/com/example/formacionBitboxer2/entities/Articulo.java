@@ -29,7 +29,10 @@ public class Articulo implements Serializable, Comparable<Articulo> {
     @Column(name="estado", nullable = false)
     private Integer estado; //Estado 1 = venta, Estado 2 = descatalogado
 
-    @ManyToMany (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,
+            CascadeType.DETACH,
+            CascadeType.REFRESH,
+            CascadeType.REMOVE})
     @JoinTable(
             name = "articulo_proveedor",
             joinColumns = @JoinColumn(name="articulo_id", nullable = false),
@@ -141,17 +144,19 @@ public class Articulo implements Serializable, Comparable<Articulo> {
         return this.compareTo(o);
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Articulo articulo = (Articulo) o;
-        return Objects.equals(idarticulo, articulo.idarticulo) &&
-                Objects.equals(codigoarticulo, articulo.codigoarticulo);
+        return idarticulo.equals(articulo.idarticulo) &&
+                codigoarticulo.equals(articulo.codigoarticulo) &&
+                creador.equals(articulo.creador);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idarticulo, codigoarticulo);
+        return Objects.hash(idarticulo, codigoarticulo, creador);
     }
 }

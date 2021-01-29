@@ -48,7 +48,7 @@ public class ProveedorService implements IProveedorService{
     @Override
     public ArticuloDTO articuloMasBaratoPorProveedor(String nombre) {
         Proveedor proveedor = proveedorRepository.findByNombre(nombre);
-        if(proveedor.getArticulos().size()>0){
+        if(!proveedor.getArticulos().isEmpty()){
             List<ArticuloDTO> articulos = articuloConverter.convertAllToDTO(proveedor.getArticulos());
             if(articulos==null){
                 return null;
@@ -69,6 +69,17 @@ public class ProveedorService implements IProveedorService{
     }
 
     @Override
+    public List<ArticuloDTO> listaArticulosMasBaratos() {
+        List<ArticuloDTO> articulosMasBaratos = new ArrayList<>();
+        List<Proveedor> proveedores = (List<Proveedor>) proveedorRepository.findAll();
+        for(Proveedor p: proveedores){
+            articulosMasBaratos.add(articuloMasBaratoPorProveedor(p.getNombre()));
+        }
+        return articulosMasBaratos;
+    }
+
+
+    @Override
     public boolean guardarProveedor(ProveedorDTO proveedorDTO) {
         Proveedor proveedorNuevo = proveedorConverter.dto2pojo(proveedorDTO);
         proveedorRepository.save(proveedorNuevo);
@@ -77,5 +88,11 @@ public class ProveedorService implements IProveedorService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<ArticuloDTO> articulosMasBaratosPrimero(String nombre) {
+        Proveedor proveedor = proveedorRepository.findByNombre(nombre);
+        return articuloConverter.convertAllToDTO(articuloRepository.findByProveedorOrderByPrecioAsc(proveedor));
     }
 }

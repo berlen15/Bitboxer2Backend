@@ -15,6 +15,7 @@ public interface IArticuloRepository extends CrudRepository<Articulo, Integer> {
     Articulo findByCodigoarticulo(Integer codigo);
     Articulo getOneByCodigoarticulo(int codigo);
     List<Articulo> findByProveedor(Proveedor proveedor);
+    List<Articulo> findByProveedorOrderByPrecioAsc(Proveedor proveedor);
     Articulo getOneByIdarticulo(int id);
     void deleteById(int id);
     void deleteByCodigoarticulo(int codigo);

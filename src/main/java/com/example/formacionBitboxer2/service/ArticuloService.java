@@ -38,9 +38,7 @@ public class ArticuloService implements IArticuloService{
 
     //CONVERTERS
     private ArticuloConverter articuloConverter= new ArticuloConverter();
-    private ProveedorConverter proveedorConverter = new ProveedorConverter();
     private ReduccionConverter reduccionConverter = new ReduccionConverter();
-    private UsuarioConverter usuarioConverter = new UsuarioConverter();
 
     @Override
     public List<ArticuloDTO> obtenerTodos() {
@@ -61,7 +59,6 @@ public class ArticuloService implements IArticuloService{
         return articuloConverter.pojo2dto(articuloRepository.findByCodigoarticulo(codigo));
     }
 
-    //ONLY ADDS SUPPLIERS IF EXISTS ON DB
     @Override
     public boolean addProveedor(int codigo, ProveedorDTO proveedorDTO) {
         Articulo articulo = articuloRepository.getOneByCodigoarticulo(codigo);

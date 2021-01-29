@@ -38,6 +38,10 @@ public class Proveedor implements Serializable {
 
     public Proveedor(){}
 
+    public void addArticulo(Articulo articulo){
+        this.articulos.add(articulo);
+    }
+
     public Integer getIdproveedor() {
         return idproveedor;
     }

@@ -79,24 +79,32 @@ public class ArticuloController implements ErrorController {
 
     }
     @PreAuthorize("hasRole('USER')")
-    @PutMapping("/articulos/{codigo}")
+    @PutMapping("/{nombre}/articulos/{codigo}")
     @ResponseBody
-    public ResponseEntity actualizar(@PathVariable("codigo") int codigo, @RequestBody ArticuloDTO articuloDTO){
+    public ResponseEntity actualizar(@PathVariable("codigo") int codigo, @PathVariable("nombre") String nombreusuario, @RequestBody ArticuloDTO articuloDTO){
         if(articuloDTO.getDescripcion()==null && articuloDTO.getEstado()==null && articuloDTO.getPrecio()==null){
             return new ResponseEntity("El artículo está vacío",HttpStatus.BAD_REQUEST);
         }
         Articulo articuloEditar = articuloConverter.dto2pojo(articuloService.obtenerPorCodigoarticulo(codigo));
-        if(articuloDTO.getPrecio()!=null){
-            articuloEditar.setPrecio(articuloDTO.getPrecio());
+        if(articuloEditar.getEstado()==2){
+            return new ResponseEntity("No se pueden editar los artículos descatalogados", HttpStatus.BAD_REQUEST);
         }
-        if(articuloDTO.getDescripcion()!=null){
-            articuloEditar.setDescripcion(articuloDTO.getDescripcion());
+        if(articuloEditar.getCreador().getNombreusuario().equals(nombreusuario)){
+            if(articuloDTO.getPrecio()!=null){
+                articuloEditar.setPrecio(articuloDTO.getPrecio());
+            }
+            if(articuloDTO.getDescripcion()!=null){
+                articuloEditar.setDescripcion(articuloDTO.getDescripcion());
+            }
+            if(articuloDTO.getEstado()!=null){
+                articuloEditar.setEstado(articuloDTO.getEstado());
+            }
+            articuloService.guardarArticulo(articuloConverter.pojo2dto(articuloEditar));
+            return new ResponseEntity("Se ha editado el artículo",HttpStatus.ACCEPTED);
+        }else{
+            return new ResponseEntity("No tiene permiso para editar este artículo",HttpStatus.ACCEPTED);
         }
-        if(articuloDTO.getEstado()!=null){
-            articuloEditar.setEstado(articuloDTO.getEstado());
-        }
-        articuloService.guardarArticulo(articuloConverter.pojo2dto(articuloEditar));
-        return new ResponseEntity("Se ha editado el artículo",HttpStatus.ACCEPTED);
+
     }
 
     @PreAuthorize("hasRole('USER')")

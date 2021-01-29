@@ -116,23 +116,59 @@ public class ProveedorServiceTest {
     @Test
     public void obtener_articulo_mas_barato_TEST(){
         Proveedor proveedor = new Proveedor(1, "empresa_nueva", "España", new ArrayList<Articulo>());
+        Proveedor proveedor2 = new Proveedor(2, "empresa_nueva-2", "España", new ArrayList<Articulo>());
+        Proveedor proveedor3 = new Proveedor(3, "empresa_nueva-3", "España", new ArrayList<Articulo>());
+
+
         final Articulo articulo = new Articulo(1002, "articulo 2", 1);
         articulo.setPrecio(1.9);
         final Articulo articulo_2 = new Articulo(1003, "articulo 3", 1);
         articulo_2.setPrecio(2.9);
         final Articulo articulo_3 = new Articulo(1004, "articulo 4", 2);
         articulo_3.setPrecio(3.9);
-        List<Articulo> articulos = new ArrayList<>();
-        articulos.add(articulo);
-        articulos.add(articulo_2);
-        articulos.add(articulo_3);
-        proveedor.setArticulos(articulos);
+        final Articulo articulo_4 = new Articulo(1005, "articulo 3", 1);
+        articulo_4.setPrecio(0.9);
+        final Articulo articulo_5 = new Articulo(1006, "articulo 4", 1);
+        articulo_5.setPrecio(5.9);
+        final Articulo articulo_6 = new Articulo(1007, "articulo 5", 2);
+        articulo_6.setPrecio(12.9);
+
+        List<Articulo> articulos_prov_1 = new ArrayList<>();
+        articulos_prov_1.add(articulo);
+        articulos_prov_1.add(articulo_2);
+        articulos_prov_1.add(articulo_3);
+        proveedor.setArticulos(articulos_prov_1);
+
+        List<Articulo> articulos_prov_2 = new ArrayList<>();
+        articulos_prov_2.add(articulo);
+        articulos_prov_2.add(articulo_4);
+        proveedor2.setArticulos(articulos_prov_2);
+
+        List<Articulo> articulos_prov_3 = new ArrayList<>();
+        articulos_prov_3.add(articulo);
+        articulos_prov_3.add(articulo_5);
+        articulos_prov_3.add(articulo_3);
+        proveedor3.setArticulos(articulos_prov_3);
+
+        List<Proveedor> proveedores = new ArrayList<>();
+        proveedores.add(proveedor);
+        proveedores.add(proveedor2);
+        proveedores.add(proveedor3);
+
         Mockito.when(proveedorRepository.findByNombre(proveedor.getNombre())).thenReturn(proveedor);
+        Mockito.when(proveedorRepository.findByNombre(proveedor2.getNombre())).thenReturn(proveedor2);
+        Mockito.when(proveedorRepository.findByNombre(proveedor3.getNombre())).thenReturn(proveedor3);
+
+
 
         final double DELTA = 1e-15;
-        ArticuloDTO articulo_barato = proveedorService.articuloMasBaratoPorProveedor(proveedor.getNombre());
-        Assert.assertEquals(0, Double.compare(articulo_barato.getPrecio(), 1.9));
-        Assert.assertNotEquals(0, Double.compare(articulo_barato.getPrecio(), 2.9));
-        Assert.assertNotEquals(0, Double.compare(articulo_barato.getPrecio(), 3.9));
+        ArticuloDTO articulo_barato_prov1 = proveedorService.articuloMasBaratoPorProveedor(proveedor.getNombre());
+        Assert.assertEquals(0, Double.compare(articulo_barato_prov1.getPrecio(), 1.9));
+
+        ArticuloDTO articulo_barato_prov2 = proveedorService.articuloMasBaratoPorProveedor(proveedor2.getNombre());
+        Assert.assertEquals(0, Double.compare(articulo_barato_prov2.getPrecio(), 0.9));
+
+        ArticuloDTO articulo_barato_prov3 = proveedorService.articuloMasBaratoPorProveedor(proveedor3.getNombre());
+        Assert.assertEquals(0, Double.compare(articulo_barato_prov3.getPrecio(), 1.9));
     }
 }

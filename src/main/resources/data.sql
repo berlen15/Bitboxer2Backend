@@ -4,8 +4,8 @@ insert into usuario (idusuario, nombreusuario, contraseña, rol)values(3,'admin'
 
 insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1000,'Herramientas multiusos para extracción de radios de coche', 1, 15.3,1);
 insert into articulo (codigoarticulo, descripcion, estado, precio,usuario_id)values(1001,'Plancha para el pelo portátil, ideal para viajes', 1, 45.3,2);
-insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1002, 'Teclado para PC sobremesa con luces led', 1, 109.3,2);
-insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1003,'Mochila para portátil con cargador USB incluído', 1, 50.3,2);
+insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1002, 'Teclado para PC sobremesa con luces led', 1, 45.4,2);
+insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1003,'Mochila para portátil con cargador USB incluído', 1, 45.2,2);
 insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1004,'Ratón especial para el descanso de las muñecas', 2,60.3,1);
 insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1005,'Fundas para asiento de coche universal', 2, 6.3,1);
 insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1006,'Libreta con cargador USB para smartphone universal', 2, 10.3,1);
@@ -20,6 +20,8 @@ insert into proveedor (idproveedor, nombre, pais)values(3,'La Quinta Puerta', 'E
 insert into articulo_proveedor (proveedor_id, articulo_id)values(1,1);
 insert into articulo_proveedor (proveedor_id, articulo_id)values(1,2);
 insert into articulo_proveedor (proveedor_id, articulo_id)values(2,2);
+insert into articulo_proveedor (proveedor_id, articulo_id)values(2,3);
+insert into articulo_proveedor (proveedor_id, articulo_id)values(2,4);
 insert into articulo_proveedor (proveedor_id, articulo_id)values(3,3);
 
 insert into reduccion (idreduccion, codigoreduccion, creacion, inicio, fin, articulo_id, cantidad, activo)values(1, 1*1,  PARSEDATETIME(20211501133321, 'yyyyMMddHHmmss'), PARSEDATETIME(20211501133321, 'yyyyMMddHHmmss'), PARSEDATETIME(20213101133321, 'yyyyMMddHHmmss'),1, 0.5, false);

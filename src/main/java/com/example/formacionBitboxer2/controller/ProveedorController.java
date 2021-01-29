@@ -53,9 +53,14 @@ public class ProveedorController implements ErrorController {
     }
 
     @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
-    @GetMapping("/proveedores/{nombre}/articulos/masbarato")
-    public ArticuloDTO articuloMasBaratoProveedor(@PathVariable(name="nombre") String nombre){
-        return proveedorService.articuloMasBaratoPorProveedor(nombre);
+    @GetMapping("/proveedores/articulos")
+    public List<ArticuloDTO> listaArticulosMasBaratos(){
+        return proveedorService.listaArticulosMasBaratos();
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
+    @GetMapping("/proveedores/{nombre}/articulos/ordenados")
+    public List<ArticuloDTO> articulosOrdenadosBaratosPrimero(@PathVariable(name="nombre") String nombre){
+        return proveedorService.articulosMasBaratosPrimero(nombre);
+    }
 }

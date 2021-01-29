@@ -9,6 +9,8 @@ public interface IProveedorService {
     public Iterable<ProveedorDTO> obtenerTodos();
     public ProveedorDTO obtenerPorNombre(String nombre);
     ArticuloDTO articuloMasBaratoPorProveedor(String nombre);
+    List<ArticuloDTO> listaArticulosMasBaratos();
     boolean guardarProveedor(ProveedorDTO proveedor);
+    List<ArticuloDTO> articulosMasBaratosPrimero(String nombre);
 
 }

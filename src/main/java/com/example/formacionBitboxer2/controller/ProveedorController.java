@@ -63,4 +63,11 @@ public class ProveedorController implements ErrorController {
     public List<ArticuloDTO> articulosOrdenadosBaratosPrimero(@PathVariable(name="nombre") String nombre){
         return proveedorService.articulosMasBaratosPrimero(nombre);
     }
+
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
+    @GetMapping("/proveedores/articulos/reduccion")
+    public List<ProveedorDTO> proveedoresArticulosReducidos(){
+        return proveedorService.listaProveedoresConArticulosReducidos();
+    }
+
 }

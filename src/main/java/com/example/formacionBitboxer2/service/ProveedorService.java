@@ -95,4 +95,9 @@ public class ProveedorService implements IProveedorService{
         Proveedor proveedor = proveedorRepository.findByNombre(nombre);
         return articuloConverter.convertAllToDTO(articuloRepository.findByProveedorOrderByPrecioAsc(proveedor));
     }
+
+    @Override
+    public List<ProveedorDTO> listaProveedoresConArticulosReducidos() {
+        return proveedorConverter.convertAllToDTO(proveedorRepository.findProveedoresArticulosReducidos());
+    }
 }

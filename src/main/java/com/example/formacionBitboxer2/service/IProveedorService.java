@@ -12,5 +12,6 @@ public interface IProveedorService {
     List<ArticuloDTO> listaArticulosMasBaratos();
     boolean guardarProveedor(ProveedorDTO proveedor);
     List<ArticuloDTO> articulosMasBaratosPrimero(String nombre);
+    List<ProveedorDTO> listaProveedoresConArticulosReducidos();
 
 }

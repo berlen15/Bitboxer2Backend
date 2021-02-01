@@ -67,7 +67,7 @@ public class ArticuloController implements ErrorController {
         return articuloService.obtenerTodosPorUsuario(nombreusuario);
     }
 
-
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/articulos")
     public ResponseEntity guardar(@RequestBody ArticuloDTO articuloDTO){
         if(articuloDTO!=null){

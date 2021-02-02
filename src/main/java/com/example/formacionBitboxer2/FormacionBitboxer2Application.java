@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @EntityScan("com/example/formacionBitboxer2/entities")
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
@@ -44,8 +45,9 @@ public class FormacionBitboxer2Application {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
-			http.csrf().disable()
+			//http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+			//http.cors().disable();
+			http.cors().and().csrf().disable()
 					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 					.authorizeRequests()
 					.antMatchers("/admin/**").hasRole("ADMIN")
@@ -55,12 +57,22 @@ public class FormacionBitboxer2Application {
 					.anyRequest().authenticated();
 		}
 
-		@Override
+		/*@Override
 		public void addCorsMappings(CorsRegistry registry) {
-			registry.addMapping("/**")
-					//.allowedOrigins("http://localhost:8080")
+			registry.addMapping("/**").allowedOrigins("http://localhost:4200")
 					.allowedMethods("GET", "POST", "PUT", "DELETE");
+		}*/
+		@Bean
+		public WebMvcConfigurer corsConfigurer() {
+			return new WebMvcConfigurerAdapter() {
+				@Override
+				public void addCorsMappings(CorsRegistry registry) {
+					registry.addMapping("/**").allowedOrigins("http://localhost:4200");
+				}
+			};
 		}
+
+
 
 		@Override
 		protected void configure(AuthenticationManagerBuilder auth) throws Exception {

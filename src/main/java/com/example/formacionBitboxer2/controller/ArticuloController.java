@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 public class ArticuloController implements ErrorController {
 
@@ -70,6 +71,7 @@ public class ArticuloController implements ErrorController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/articulos")
     public ResponseEntity guardar(@RequestBody ArticuloDTO articuloDTO){
+        System.out.println("Guardando artículo...");
         if(articuloDTO!=null){
             articuloService.guardarArticulo(articuloDTO);
             return new ResponseEntity("Artículo creado con éxito",HttpStatus.CREATED);
@@ -79,9 +81,10 @@ public class ArticuloController implements ErrorController {
 
     }
     @PreAuthorize("hasRole('USER')")
+    //@CrossOrigin
     @PutMapping("/{nombre}/articulos/{codigo}")
-    @ResponseBody
     public ResponseEntity actualizar(@PathVariable("codigo") int codigo, @PathVariable("nombre") String nombreusuario, @RequestBody ArticuloDTO articuloDTO){
+        System.out.println("Se ha entrado al actualizar");
         if(articuloDTO.getDescripcion()==null && articuloDTO.getEstado()==null && articuloDTO.getPrecio()==null){
             return new ResponseEntity("El artículo está vacío",HttpStatus.BAD_REQUEST);
         }

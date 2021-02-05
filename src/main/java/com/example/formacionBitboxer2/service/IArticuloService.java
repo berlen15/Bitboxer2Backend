@@ -3,6 +3,7 @@ package com.example.formacionBitboxer2.service;
 import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.ProveedorDTO;
 import com.example.formacionBitboxer2.dto.ReduccionDTO;
+import com.example.formacionBitboxer2.dto.UsuarioDTO;
 
 import java.util.List;
 

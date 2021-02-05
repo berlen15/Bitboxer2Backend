@@ -4,6 +4,7 @@ import com.example.formacionBitboxer2.Rol;
 import com.example.formacionBitboxer2.converter.ArticuloConverter;
 import com.example.formacionBitboxer2.converter.ReduccionConverter;
 import com.example.formacionBitboxer2.dto.ArticuloDTO;
+import com.example.formacionBitboxer2.dto.UsuarioDTO;
 import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.entities.Usuario;
 import com.example.formacionBitboxer2.repository.IArticuloRepository;
@@ -116,7 +117,11 @@ public class ArticuloServiceTest {
 
     @Test
     public void guardar_articulo_TEST(){
-        final Usuario usuario = new Usuario ("belen","belen", Rol.valueOf("USER"), new ArrayList<Articulo>());
+        final UsuarioDTO usuario = new UsuarioDTO ();
+        usuario.setNombreusuario("belen");
+        usuario.setContraseña("belen");
+        usuario.setRol(Rol.valueOf("USER"));
+        usuario.setArticulos(new ArrayList<ArticuloDTO>());
         final ArticuloDTO articuloDto = new ArticuloDTO ();
         articuloDto.setCreador(usuario);
         articuloDto.setPrecio(9.1);

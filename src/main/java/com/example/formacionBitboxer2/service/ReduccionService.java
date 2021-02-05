@@ -33,7 +33,7 @@ public class ReduccionService implements IReduccionService{
     }
 
     @Override
-    public ReduccionDTO obtenerPorCodigoreduccion(Integer codigo) {
+    public ReduccionDTO obtenerPorCodigoreduccion(Long codigo) {
         return reduccionConverter.pojo2dto(reduccionRepository.findByCodigoreduccion(codigo));
     }
 

@@ -15,14 +15,14 @@ public class ArticuloDTO implements Serializable {
 
     private List<ProveedorDTO> proveedor;
     private List<ReduccionDTO> reducciones;
-    @JsonBackReference
-    private Usuario creador;
 
-    public Usuario getCreador() {
+    private UsuarioDTO creador;
+
+    public UsuarioDTO getCreador() {
         return creador;
     }
 
-    public void setCreador(Usuario creador) {
+    public void setCreador(UsuarioDTO creador) {
         this.creador = creador;
     }
 

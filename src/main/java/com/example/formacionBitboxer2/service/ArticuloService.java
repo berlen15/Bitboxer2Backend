@@ -1,12 +1,12 @@
 package com.example.formacionBitboxer2.service;
 
 import com.example.formacionBitboxer2.converter.ArticuloConverter;
-import com.example.formacionBitboxer2.converter.ProveedorConverter;
 import com.example.formacionBitboxer2.converter.ReduccionConverter;
 import com.example.formacionBitboxer2.converter.UsuarioConverter;
 import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.ProveedorDTO;
 import com.example.formacionBitboxer2.dto.ReduccionDTO;
+import com.example.formacionBitboxer2.dto.UsuarioDTO;
 import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.entities.Proveedor;
 import com.example.formacionBitboxer2.entities.Reduccion;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,6 +40,7 @@ public class ArticuloService implements IArticuloService{
     //CONVERTERS
     private ArticuloConverter articuloConverter= new ArticuloConverter();
     private ReduccionConverter reduccionConverter = new ReduccionConverter();
+    private UsuarioConverter usuarioConverter = new UsuarioConverter();
 
     @Override
     public List<ArticuloDTO> obtenerTodos() {
@@ -77,18 +79,21 @@ public class ArticuloService implements IArticuloService{
     public boolean addReduccion(int codigo, String nombreusuario, ReduccionDTO reduccion) {
         Articulo articulo = articuloRepository.findByCodigoarticulo(codigo);
         Usuario usuario = usuarioRepository.findByNombreusuario(nombreusuario);
-        if(articulo.getCreador().getNombreusuario()==usuario.getNombreusuario()){
+        if(articulo.getCreador().getNombreusuario().equals(usuario.getNombreusuario())){
             List<Reduccion> reducciones = articulo.getReducciones();
             Reduccion nuevaReduccion = reduccionConverter.dto2pojo(reduccion);
+            nuevaReduccion.setInicio(reduccion.getInicio());
+            nuevaReduccion.setCreacion(new Date());
             reduccionService.asociarArticulo(codigo, reduccion);
-            articulo.addReduccion(nuevaReduccion);
-            if(articulo.getReducciones().contains(nuevaReduccion)) {
                 return true;
-            }
         }
         return false;
     }
 
+    public Integer generarCodigoReduccion(Articulo articulo){
+        Integer codigo = articulo.getCodigoarticulo()*articulo.getReducciones().size()+1;
+        return codigo;
+    }
     @Override
     public boolean eliminarArticulo(int codigo) {
         articuloRepository.deleteByCodigoarticulo(codigo);

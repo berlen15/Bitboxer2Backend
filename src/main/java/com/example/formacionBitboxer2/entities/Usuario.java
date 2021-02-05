@@ -32,6 +32,18 @@ public class Usuario implements Serializable, UserDetails {
     @Column(name="contraseña")
     private String contraseña;
 
+    @Column(name="ciudad")
+    private String ciudad;
+
+    @Column(name="nombre")
+    private String nombre;
+
+    @Column(name="apellidos")
+    private String apellidos;
+
+    @Column(name="telefono")
+    private String telefono;
+
     @Column(name="rol")
     @Enumerated(EnumType.STRING)
     private Rol rol;
@@ -39,7 +51,7 @@ public class Usuario implements Serializable, UserDetails {
    /* @OneToMany (cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "creador", orphanRemoval = true)
     private List<Reduccion> reducciones;*/
 
-    @OneToMany (cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "creador", orphanRemoval = true)
+    @OneToMany (cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "creador")
     private List<Articulo> articulos;
 
 
@@ -60,6 +72,48 @@ public class Usuario implements Serializable, UserDetails {
         this.contraseña = contraseña;
         this.rol = rol;
         this.articulos = articulos;
+    }
+
+    public Usuario(String nombreusuario, String contraseña, String ciudad, String nombre, String apellidos, String telefono, Rol rol) {
+        this.nombreusuario = nombreusuario;
+        this.contraseña = contraseña;
+        this.ciudad = ciudad;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.telefono = telefono;
+        this.rol = rol;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public List<Articulo> getArticulos() {

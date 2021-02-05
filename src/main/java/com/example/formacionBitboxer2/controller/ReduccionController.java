@@ -20,7 +20,7 @@ public class ReduccionController implements ErrorController {
 
     @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
     @PostMapping("/reducciones/{codigo}")
-    public ResponseEntity actualizarEstadoReduccion(@PathVariable("codigo") Integer codigo, @RequestParam Boolean estado){
+    public ResponseEntity actualizarEstadoReduccion(@PathVariable("codigo") Long codigo, @RequestParam Boolean estado){
         Reduccion reduccion = reduccionConverter.dto2pojo(reduccionService.obtenerPorCodigoreduccion(codigo));
         reduccion.setActivo(estado);
         reduccionService.guardarReduccion(reduccion);
@@ -33,7 +33,7 @@ public class ReduccionController implements ErrorController {
 
     @PreAuthorize("hasRole('ADMIN') OR hasRole('USER')")
     @GetMapping("/reducciones/{codigo}")
-    public ReduccionDTO obtenerReduccion(@PathVariable("codigo") Integer codigo){
+    public ReduccionDTO obtenerReduccion(@PathVariable("codigo") Long codigo){
        return reduccionService.obtenerPorCodigoreduccion(codigo);
     }
 

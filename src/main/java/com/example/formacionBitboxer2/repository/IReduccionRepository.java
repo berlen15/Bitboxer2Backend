@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface IReduccionRepository extends CrudRepository<Reduccion, Integer> {
     Reduccion save(Reduccion reduccion);
-    Reduccion findByCodigoreduccion(Integer codigo);
+    Reduccion findByCodigoreduccion(Long codigo);
 }

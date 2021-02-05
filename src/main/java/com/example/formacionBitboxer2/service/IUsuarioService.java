@@ -6,5 +6,5 @@ public interface IUsuarioService {
     UsuarioDTO buscarPorNombreUsuario(String nombreusuario);
     boolean crearUsuario(UsuarioDTO usuario);
     boolean eliminarUsuario(String nombreusuario);
-
+    void guardarUsuario(UsuarioDTO usuarioDTO);
 }

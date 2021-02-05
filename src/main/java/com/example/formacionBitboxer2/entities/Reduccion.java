@@ -33,14 +33,14 @@ public class Reduccion implements Serializable {
     @JoinColumn ( name = "articulo_id", updatable = false)
     private Articulo articulo;
 
-    @Column(name="codigoreduccion", unique = true)
+    @Column(name="codigoreduccion", unique = true, nullable = false)
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer codigoreduccion;
+    private Long codigoreduccion;
 
     private boolean activo;
 
     public Reduccion(){}
-    public Reduccion(int idreduccion, int codigoreduccion, Date creacion, Date inicio, Date fin, Articulo articulo, boolean activo) {
+    public Reduccion(int idreduccion, Long codigoreduccion, Date creacion, Date inicio, Date fin, Articulo articulo, boolean activo) {
         this.idreduccion = idreduccion;
         this.creacion = creacion;
         this.inicio = inicio;
@@ -50,20 +50,28 @@ public class Reduccion implements Serializable {
         this.codigoreduccion=codigoreduccion;
     }
 
-    public Reduccion(Double cantidad, Date fin, Articulo articulo, Integer codigoreduccion, boolean activo) {
+    public Reduccion(Double cantidad, Date creacion, Date inicio, Date fin, Articulo articulo, Long codigoreduccion) {
+        this.cantidad = cantidad;
+        this.creacion = creacion;
+        this.inicio = inicio;
+        this.fin = fin;
+        this.articulo = articulo;
+        this.codigoreduccion = codigoreduccion;
+    }
+
+    public Reduccion(Double cantidad, Date fin, Articulo articulo, Long codigoreduccion, boolean activo) {
         this.cantidad = cantidad;
         this.fin = fin;
         this.articulo = articulo;
         this.codigoreduccion = codigoreduccion;
         this.activo = activo;
-        this.codigoreduccion=articulo.getIdarticulo()*this.idreduccion;
     }
 
-    public Integer getCodigoreduccion() {
+    public Long getCodigoreduccion() {
         return codigoreduccion;
     }
 
-    public void setCodigoreduccion(Integer codigoreduccion) {
+    public void setCodigoreduccion(Long codigoreduccion) {
         this.codigoreduccion = codigoreduccion;
     }
 

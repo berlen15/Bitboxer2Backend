@@ -1,8 +1,6 @@
 package com.example.formacionBitboxer2.converter;
 
-import com.example.formacionBitboxer2.dto.ProveedorDTO;
 import com.example.formacionBitboxer2.dto.ReduccionDTO;
-import com.example.formacionBitboxer2.entities.Proveedor;
 import com.example.formacionBitboxer2.entities.Reduccion;
 
 public class ReduccionConverter {

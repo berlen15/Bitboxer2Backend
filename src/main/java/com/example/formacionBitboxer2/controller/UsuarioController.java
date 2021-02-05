@@ -1,7 +1,9 @@
 package com.example.formacionBitboxer2.controller;
 
 import com.example.formacionBitboxer2.converter.UsuarioConverter;
+import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.UsuarioDTO;
+import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.entities.Usuario;
 import com.example.formacionBitboxer2.service.UsuarioService;
 import io.jsonwebtoken.Jwts;
@@ -19,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -70,10 +73,45 @@ public class UsuarioController implements ErrorController {
     @DeleteMapping("/usuarios/{nombreusuario}")
     public ResponseEntity eliminarUsuario(@PathVariable("nombreusuario") String nombreusuario){
         if(usuarioService.eliminarUsuario(nombreusuario)){
+            System.out.println("Se entra al eliminar, y se elimina a "+nombreusuario);
             return new ResponseEntity("Usuario eliminado con éxito", HttpStatus.ACCEPTED);
         }else{
             return new ResponseEntity("No se pudo eliminar el usuario correctamente", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/usuarios/{nombreusuario}")
+    public ResponseEntity actualizar(@PathVariable("nombreusuario") String nombreusuario, @RequestBody UsuarioDTO usuarioDTO){
+        /*if(usuarioDTO.getNombreusuario()==null && usuarioDTO.getContraseña()==null && usuarioDTO.getRol()==null){
+            return new ResponseEntity("Falta algún campo obligatorio (nombreusuario, contraseña o rol)",HttpStatus.BAD_REQUEST);
+        }*/
+        Usuario usuarioEditar = usuarioConverter.dto2pojo(usuarioService.buscarPorNombreUsuario(nombreusuario));
+        if(usuarioDTO.getNombreusuario()!=null){
+            usuarioEditar.setNombre(usuarioDTO.getNombreusuario());
+        }
+        if(usuarioDTO.getContraseña()!=null){
+            usuarioEditar.setContraseña(usuarioDTO.getContraseña());
+        }
+        if(usuarioDTO.getNombre()!=null){
+            usuarioEditar.setNombre(usuarioDTO.getNombre());
+        }
+        if(usuarioDTO.getApellidos()!=null){
+            usuarioEditar.setApellidos(usuarioDTO.getApellidos());
+        }
+        if(usuarioDTO.getTelefono()!=null){
+            usuarioEditar.setTelefono(usuarioDTO.getTelefono());
+        }
+        if(usuarioDTO.getCiudad()!=null){
+            usuarioEditar.setCiudad(usuarioDTO.getCiudad());
+        }
+        if(usuarioDTO.getRol()!=null){
+            usuarioEditar.setRol(usuarioDTO.getRol());
+        }
+        usuarioService.guardarUsuario(usuarioConverter.pojo2dto(usuarioEditar));
+        return new ResponseEntity("Se ha editado el usuario",HttpStatus.ACCEPTED);
+
+
     }
 
     @PostMapping("/login")

@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -54,20 +53,22 @@ public class FormacionBitboxer2Application {
 					.antMatchers("/user/**").hasRole("USER")
 					.antMatchers(HttpMethod.POST, "/login").permitAll()
 					.antMatchers(HttpMethod.GET, "/articulos").permitAll()
+					.and()
+					.authorizeRequests()
+					.antMatchers("/h2-console/**").permitAll()
 					.anyRequest().authenticated();
-		}
+			http.headers().frameOptions().disable();
 
-		/*@Override
-		public void addCorsMappings(CorsRegistry registry) {
-			registry.addMapping("/**").allowedOrigins("http://localhost:4200")
-					.allowedMethods("GET", "POST", "PUT", "DELETE");
-		}*/
+		}
 		@Bean
 		public WebMvcConfigurer corsConfigurer() {
 			return new WebMvcConfigurerAdapter() {
 				@Override
 				public void addCorsMappings(CorsRegistry registry) {
-					registry.addMapping("/**").allowedOrigins("http://localhost:4200");
+					registry.addMapping("/**")
+					.allowedOrigins("http://localhost:4200")
+					.allowedMethods("GET", "POST", "PUT", "DELETE")
+					.maxAge(3600);
 				}
 			};
 		}

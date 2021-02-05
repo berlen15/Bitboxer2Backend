@@ -11,13 +11,13 @@ public class ReduccionDTO implements Serializable {
     private ArticuloDTO articulo;
     private Double cantidad;
     private boolean activo;
-    private Integer codigoreduccion;
+    private Long codigoreduccion;
 
-    public Integer getCodigoreduccion() {
+    public Long getCodigoreduccion() {
         return codigoreduccion;
     }
 
-    public void setCodigoreduccion(Integer codigoreduccion) {
+    public void setCodigoreduccion(Long codigoreduccion) {
         this.codigoreduccion = codigoreduccion;
     }
 
@@ -76,4 +76,5 @@ public class ReduccionDTO implements Serializable {
     public void setCantidad(Double cantidad) {
         this.cantidad = cantidad;
     }
+
 }

@@ -48,7 +48,7 @@ public class ArticuloConverter {
         articuloPojo.setEstado(articuloDTO.getEstado());
         articuloPojo.setIdarticulo(articuloDTO.getIdarticulo());
         articuloPojo.setCodigoarticulo(articuloDTO.getCodigoarticulo());
-        articuloPojo.setCreador(articuloDTO.getCreador());
+        articuloPojo.setCreador(usuarioConverter.dto2pojo(articuloDTO.getCreador()));
         return articuloPojo;
     }
     
@@ -79,7 +79,7 @@ public class ArticuloConverter {
         articuloDTO.setEstado(articulo.getEstado());
         articuloDTO.setIdarticulo(articulo.getIdarticulo());
         articuloDTO.setCodigoarticulo(articulo.getCodigoarticulo());
-        articuloDTO.setCreador(articulo.getCreador());
+        articuloDTO.setCreador(usuarioConverter.pojo2dto(articulo.getCreador()));
         return articuloDTO;
     }
     public List<Articulo> convertAllToPojo(List<ArticuloDTO> articulosDTO){

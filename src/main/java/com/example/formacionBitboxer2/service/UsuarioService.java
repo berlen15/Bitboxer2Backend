@@ -1,6 +1,7 @@
 package com.example.formacionBitboxer2.service;
 
 import com.example.formacionBitboxer2.converter.UsuarioConverter;
+import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.UsuarioDTO;
 import com.example.formacionBitboxer2.entities.Usuario;
 import com.example.formacionBitboxer2.repository.IUsuarioRepository;
@@ -44,6 +45,9 @@ public class UsuarioService implements IUsuarioService, UserDetailsService {
             return true;
         }
         return false;
+    }
+    public void guardarUsuario(UsuarioDTO usuarioDTO) {
+        usuarioRepository.save(usuarioConverter.dto2pojo(usuarioDTO));
     }
 
     @Transactional

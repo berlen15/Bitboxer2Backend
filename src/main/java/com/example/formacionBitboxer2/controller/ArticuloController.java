@@ -4,6 +4,7 @@ import com.example.formacionBitboxer2.converter.ArticuloConverter;
 import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.ProveedorDTO;
 import com.example.formacionBitboxer2.dto.ReduccionDTO;
+import com.example.formacionBitboxer2.dto.UsuarioDTO;
 import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.service.ArticuloService;
 import com.example.formacionBitboxer2.service.ReduccionService;
@@ -28,6 +29,7 @@ public class ArticuloController implements ErrorController {
     private ReduccionService reduccionService;
 
     private ArticuloConverter articuloConverter = new ArticuloConverter();
+
     @GetMapping("/articulos")
     public List<ArticuloDTO> obtenerTodos(){
         return articuloService.obtenerTodos();
@@ -71,7 +73,6 @@ public class ArticuloController implements ErrorController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/articulos")
     public ResponseEntity guardar(@RequestBody ArticuloDTO articuloDTO){
-        System.out.println("Guardando artículo...");
         if(articuloDTO!=null){
             articuloService.guardarArticulo(articuloDTO);
             return new ResponseEntity("Artículo creado con éxito",HttpStatus.CREATED);
@@ -81,7 +82,6 @@ public class ArticuloController implements ErrorController {
 
     }
     @PreAuthorize("hasRole('USER')")
-    //@CrossOrigin
     @PutMapping("/{nombre}/articulos/{codigo}")
     public ResponseEntity actualizar(@PathVariable("codigo") int codigo, @PathVariable("nombre") String nombreusuario, @RequestBody ArticuloDTO articuloDTO){
         System.out.println("Se ha entrado al actualizar");
@@ -113,6 +113,7 @@ public class ArticuloController implements ErrorController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/articulos/{codigo}/proveedores")
     public ResponseEntity añadirProveedor(@PathVariable("codigo") int codigo, @RequestBody ProveedorDTO proveedorDTO){
+        System.out.println("Está entrando al añadir proveedor");
         if(proveedorDTO==null){
             return new ResponseEntity("El proveedor seleccionado no es válido", HttpStatus.BAD_REQUEST);
         }

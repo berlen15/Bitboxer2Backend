@@ -4,6 +4,7 @@ import com.example.formacionBitboxer2.Rol;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,11 +14,48 @@ public class UsuarioDTO implements Serializable {
     private String nombreusuario;
     private String contraseña;
     private Rol rol;
-    @JsonBackReference
+    //@JsonBackReference
     private List<ReduccionDTO> reducciones;
-    private List<ArticuloDTO> articulos;
 
+    @JsonBackReference
+    private List<ArticuloDTO> articulos;
+    private String ciudad;
+    private String nombre;
+    private String apellidos;
+    private String telefono;
     private String token;
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 
     public List<ArticuloDTO> getArticulos() {
         return articulos;

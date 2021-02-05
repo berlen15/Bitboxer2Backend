@@ -46,14 +46,14 @@ public class ReduccionServiceTest {
         fechaFin.setYear(2021);
         fechaFin.setMonth(1);
         fechaFin.setDate(31);
-        final Reduccion reduccion_art = new Reduccion(0.5, fechaFin, articulo, 1000, true);
+        final Reduccion reduccion_art = new Reduccion(0.5, fechaFin, articulo, 1L, true);
         when(reduccionRepository.findByCodigoreduccion(reduccion_art.getCodigoreduccion())).thenReturn(reduccion_art);
     }
 
     @Test
     public void obtener_reduccion_por_codigo_TEST(){
-        ReduccionDTO reduccion = reduccionService.obtenerPorCodigoreduccion(1000);
+        ReduccionDTO reduccion = reduccionService.obtenerPorCodigoreduccion(1L);
         Assert.assertNotNull(reduccion);
-        Assert.assertNull(reduccionService.obtenerPorCodigoreduccion(1001));
+        Assert.assertNull(reduccionService.obtenerPorCodigoreduccion(2L));
     }
 }

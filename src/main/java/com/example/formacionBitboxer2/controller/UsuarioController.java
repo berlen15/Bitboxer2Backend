@@ -83,9 +83,6 @@ public class UsuarioController implements ErrorController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/usuarios/{nombreusuario}")
     public ResponseEntity actualizar(@PathVariable("nombreusuario") String nombreusuario, @RequestBody UsuarioDTO usuarioDTO){
-        /*if(usuarioDTO.getNombreusuario()==null && usuarioDTO.getContraseña()==null && usuarioDTO.getRol()==null){
-            return new ResponseEntity("Falta algún campo obligatorio (nombreusuario, contraseña o rol)",HttpStatus.BAD_REQUEST);
-        }*/
         Usuario usuarioEditar = usuarioConverter.dto2pojo(usuarioService.buscarPorNombreUsuario(nombreusuario));
         if(usuarioDTO.getNombreusuario()!=null){
             usuarioEditar.setNombre(usuarioDTO.getNombreusuario());

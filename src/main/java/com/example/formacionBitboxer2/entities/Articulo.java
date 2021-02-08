@@ -31,8 +31,7 @@ public class Articulo implements Serializable, Comparable<Articulo> {
 
     @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,
             CascadeType.DETACH,
-            CascadeType.REFRESH,
-            CascadeType.REMOVE})
+            CascadeType.REFRESH})
     @JoinTable(
             name = "articulo_proveedor",
             joinColumns = @JoinColumn(name="articulo_id", nullable = false),

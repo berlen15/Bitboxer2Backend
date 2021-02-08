@@ -19,5 +19,6 @@ public interface IArticuloRepository extends CrudRepository<Articulo, Integer> {
     Articulo getOneByIdarticulo(int id);
     void deleteById(int id);
     void deleteByCodigoarticulo(int codigo);
+    void deleteByIdarticulo(int id);
     List<Articulo> findByCreador(Usuario creador);
 }

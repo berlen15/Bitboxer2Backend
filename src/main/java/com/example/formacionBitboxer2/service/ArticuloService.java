@@ -15,6 +15,7 @@ import com.example.formacionBitboxer2.repository.IArticuloRepository;
 import com.example.formacionBitboxer2.repository.IProveedorRepository;
 import com.example.formacionBitboxer2.repository.IUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -51,6 +52,7 @@ public class ArticuloService implements IArticuloService{
         return articulosDTO;
     }
 
+    @Async
     @Override
     public void guardarArticulo(ArticuloDTO articuloDTO) {
         articuloRepository.save(articuloConverter.dto2pojo(articuloDTO));
@@ -94,6 +96,7 @@ public class ArticuloService implements IArticuloService{
         Integer codigo = articulo.getCodigoarticulo()*articulo.getReducciones().size()+1;
         return codigo;
     }
+
     @Override
     public boolean eliminarArticulo(int codigo) {
         articuloRepository.deleteByCodigoarticulo(codigo);
@@ -110,4 +113,5 @@ public class ArticuloService implements IArticuloService{
         Usuario usuario = usuarioRepository.findByNombreusuario(nombreusuario);
         return articuloConverter.convertAllToDTO(articuloRepository.findByCreador(usuario));
     }
+
 }

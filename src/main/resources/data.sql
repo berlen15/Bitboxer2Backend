@@ -4,7 +4,7 @@ insert into usuario (idusuario, nombreusuario, contraseña, rol, nombre, apellid
 
 insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1000,'Herramientas multiusos para extracción de radios de coche', 1, 15.3,1);
 insert into articulo (codigoarticulo, descripcion, estado, precio,usuario_id)values(1001,'Plancha para el pelo portátil, ideal para viajes', 1, 45.3,2);
-insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1002, 'Teclado para PC sobremesa con luces led', 1, 45.4,2);
+insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1002, 'Teclado para PC sobremesa con luces led', 1, 25.4,2);
 insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1003,'Mochila para portátil con cargador USB incluído', 1, 45.2,2);
 insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1004,'Ratón especial para el descanso de las muñecas', 2,60.3,1);
 insert into articulo (codigoarticulo, descripcion, estado, precio, usuario_id)values(1005,'Fundas para asiento de coche universal', 2, 6.3,1);

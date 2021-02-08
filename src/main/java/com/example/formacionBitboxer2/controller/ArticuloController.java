@@ -141,6 +141,7 @@ public class ArticuloController implements ErrorController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/articulos/{codigo}")
     public ResponseEntity eliminarArticulo( @PathVariable("codigo") int codigo){
+        System.out.println("Entra al eliminar y elimina el "+codigo);
         if(articuloService.eliminarArticulo(codigo)){
            return new ResponseEntity("El articulo ha sido eliminado con éxito", HttpStatus.ACCEPTED);
        }else{

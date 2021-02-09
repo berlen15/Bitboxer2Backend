@@ -1,9 +1,7 @@
 package com.example.formacionBitboxer2.controller;
 
 import com.example.formacionBitboxer2.converter.UsuarioConverter;
-import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.UsuarioDTO;
-import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.entities.Usuario;
 import com.example.formacionBitboxer2.service.UsuarioService;
 import io.jsonwebtoken.Jwts;
@@ -21,7 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;

@@ -4,7 +4,6 @@ import com.example.formacionBitboxer2.converter.ArticuloConverter;
 import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.dto.ProveedorDTO;
 import com.example.formacionBitboxer2.dto.ReduccionDTO;
-import com.example.formacionBitboxer2.dto.UsuarioDTO;
 import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.service.ArticuloService;
 import com.example.formacionBitboxer2.service.ReduccionService;
@@ -131,7 +130,6 @@ public class ArticuloController implements ErrorController {
         if(reduccionDTO==null){
             return new ResponseEntity("La fecha de fin, ni creador ni la cantidad pueden estar vacíos", HttpStatus.BAD_REQUEST);
         }
-        //Asociar reducción al artículo
         if(articuloService.addReduccion(codigo, nombreusuario, reduccionDTO)){
             return new ResponseEntity("Se ha añadido la reducción de precio al artículo", HttpStatus.CREATED);
         }

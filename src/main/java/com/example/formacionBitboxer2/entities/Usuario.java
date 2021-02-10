@@ -26,10 +26,10 @@ public class Usuario implements Serializable, UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idusuario;
 
-    @Column(name="nombreusuario", unique = true)
+    @Column(name="nombreusuario", unique = true, nullable = false)
     private String nombreusuario;
 
-    @Column(name="contraseña")
+    @Column(name="contraseña", nullable = false)
     private String contraseña;
 
     @Column(name="ciudad")
@@ -44,7 +44,7 @@ public class Usuario implements Serializable, UserDetails {
     @Column(name="telefono")
     private String telefono;
 
-    @Column(name="rol")
+    @Column(name="rol", nullable = false)
     @Enumerated(EnumType.STRING)
     private Rol rol;
 

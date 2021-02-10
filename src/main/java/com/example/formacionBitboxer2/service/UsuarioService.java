@@ -47,6 +47,9 @@ public class UsuarioService implements IUsuarioService, UserDetailsService {
         return false;
     }
     public void guardarUsuario(UsuarioDTO usuarioDTO) {
+        String salt = BCrypt.gensalt(12);
+        String contraseña=usuarioDTO.getContraseña();
+        usuarioDTO.setContraseña(BCrypt.hashpw(contraseña,salt));
         usuarioRepository.save(usuarioConverter.dto2pojo(usuarioDTO));
     }
 

@@ -39,8 +39,6 @@ public class ArticuloController implements ErrorController {
         return articuloService.obtenerPorCodigoarticulo(codigo);
     }
 
-
-
     @GetMapping("/articulos/filter")
     public @ResponseBody List<ArticuloDTO>  obtenerPorFiltro(@RequestParam(name="estado") String estado) {
         List<ArticuloDTO> resultados = new ArrayList<>();

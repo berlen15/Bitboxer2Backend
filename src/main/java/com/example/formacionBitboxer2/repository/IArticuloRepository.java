@@ -1,9 +1,11 @@
 package com.example.formacionBitboxer2.repository;
 
+import com.example.formacionBitboxer2.dto.ArticuloDTO;
 import com.example.formacionBitboxer2.entities.Articulo;
 import com.example.formacionBitboxer2.entities.Proveedor;
 import com.example.formacionBitboxer2.entities.Reduccion;
 import com.example.formacionBitboxer2.entities.Usuario;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
